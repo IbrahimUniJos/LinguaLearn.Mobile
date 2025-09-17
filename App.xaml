@@ -15,6 +15,11 @@
             <converters:FirstCharConverter x:Key="FirstCharConverter" />
             <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
             <converters:IntToBoolConverter x:Key="IntToBoolConverter" />
+            <converters:ActionButtonTextConverter x:Key="ActionButtonTextConverter" />
+            <converters:AddOneConverter x:Key="AddOneConverter" />
+            <converters:SectionTypeToSkipVisibilityConverter x:Key="SectionTypeToSkipVisibilityConverter" />
+            <converters:DifficultyIconConverter x:Key="DifficultyIconConverter" />
+            <converters:EstimatedTimeConverter x:Key="EstimatedTimeConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

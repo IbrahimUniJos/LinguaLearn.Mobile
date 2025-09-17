@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="LinguaLearn.Mobile.Views.QuizPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:LinguaLearn.Mobile.ViewModels"
+             xmlns:converters="clr-namespace:LinguaLearn.Mobile.Converters"
+             x:DataType="viewmodels:QuizViewModel"
+             Title="{Binding CurrentQuiz.Title}"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:IntToBoolConverter x:Key="IntToBoolConverter" />
+            <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
+            <converters:StringIsNotNullOrEmptyConverter x:Key="StringIsNotNullOrEmptyConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+        <!-- Header with Timer and Progress -->
+        <Grid Grid.Row="0" 
+              ColumnDefinitions="Auto,*,Auto"
+              Padding="20,10"
+              ColumnSpacing="10"
+              BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+            
+            <!-- Timer -->
+            <Border Grid.Column="0"
+                    BackgroundColor="{StaticResource Error}"
+                    Stroke="{StaticResource Error}"
+                    StrokeThickness="1"
+                    Padding="8,4"
+                    VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
+                <Label Text="{Binding FormattedTimeRemaining}"
+                       TextColor="{StaticResource OnError}"
+                       FontSize="12"
+                       FontAttributes="Bold" />
+            </Border>
+            
+            <!-- Progress -->
+            <StackLayout Grid.Column="1"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Spacing="5">
+                <Label Text="{Binding CurrentQuestionIndex, StringFormat='Question {0} of {1}', ConverterParameter={Binding TotalQuestions}}"
+                       TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}"
+                       FontSize="14"
+                       HorizontalOptions="Center" />
+                <ProgressBar Progress="{Binding ProgressPercentage, Converter={StaticResource PercentageConverter}}"
+                            ProgressColor="{StaticResource Primary}"
+                            BackgroundColor="{StaticResource SurfaceVariant}"
+                            HeightRequest="4" />
+            </StackLayout>
+            
+            <!-- XP Counter -->
+            <Border Grid.Column="2"
+                    BackgroundColor="{StaticResource Primary}"
+                    Stroke="{StaticResource Primary}"
+                    StrokeThickness="1"
+                    Padding="8,4"
+                    VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
+                <Label Text="{Binding XpEarned, StringFormat='+{0} XP'}"
+                       TextColor="{StaticResource OnPrimary}"
+                       FontSize="12"
+                       FontAttributes="Bold" />
+            </Border>
+        </Grid>
+        
+        <!-- Loading Indicator -->
+        <ActivityIndicator Grid.Row="1"
+                          IsRunning="{Binding IsLoading}"
+                          IsVisible="{Binding IsLoading}"
+                          Color="{StaticResource Primary}"
+                          HeightRequest="40" />
+        
+        <!-- Quiz Content -->
+        <ScrollView Grid.Row="2" 
+                   Padding="20"
+                   IsVisible="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}">
+            <StackLayout Spacing="20">
+                
+                <!-- Error Message -->
+                <Border IsVisible="{Binding ErrorMessage, Converter={StaticResource StringIsNotNullOrEmptyConverter}}"
+                        BackgroundColor="{StaticResource ErrorContainer}"
+                        Stroke="{StaticResource Error}"
+                        StrokeThickness="1"
+                        Padding="15">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Label Text="{Binding ErrorMessage}"
+                           TextColor="{StaticResource OnErrorContainer}"
+                           FontSize="14" />
+                </Border>
+                
+                <!-- Question Content -->
+                <StackLayout IsVisible="{Binding CurrentQuestion, Converter={StaticResource IsNotNullConverter}}"
+                           Spacing="20">
+                    
+                    <!-- Question Text -->
+                    <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                            Stroke="{StaticResource Outline}"
+                            StrokeThickness="1"
+                            Padding="20">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="15" />
+                        </Border.StrokeShape>
+                        <Label Text="{Binding CurrentQuestion.Question}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}"
+                               LineHeight="1.4" />
+                    </Border>
+                    
+                    <!-- Multiple Choice Options -->
+                    <StackLayout IsVisible="{Binding CurrentQuestion.Type, Converter={StaticResource StringEqualsConverter}, ConverterParameter=multiple_choice}"
+                               Spacing="10">
+                        
+                        <CollectionView ItemsSource="{Binding QuestionOptions}"
+                                       SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="{x:Type x:String}">
+                                    <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                                            Stroke="{StaticResource Outline}"
+                                            StrokeThickness="1"
+                                            Padding="15"
+                                            Margin="0,5">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="12" />
+                                        </Border.StrokeShape>
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:QuizViewModel}}, Path=SelectOptionCommand}"
+                                                                CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext}" />
+                                        </Border.GestureRecognizers>
+                                        <Grid ColumnDefinitions="Auto,*">
+                                            <Ellipse Grid.Column="0"
+                                                    Fill="{StaticResource Primary}"
+                                                    WidthRequest="20"
+                                                    HeightRequest="20"
+                                                    VerticalOptions="Center"
+                                                    Margin="0,0,10,0" />
+                                            <Label Grid.Column="1"
+                                                   Text="{Binding .}"
+                                                   FontSize="16"
+                                                   TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}"
+                                                   VerticalOptions="Center" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                    
+                    <!-- Fill in the Blank -->
+                    <StackLayout IsVisible="{Binding CurrentQuestion.Type, Converter={StaticResource StringEqualsConverter}, ConverterParameter=fill_blank}"
+                               Spacing="10">
+                        <Entry Text="{Binding UserAnswer}"
+                               Placeholder="Type your answer here"
+                               FontSize="16"
+                               BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                               TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}"
+                               PlaceholderColor="{StaticResource OnSurfaceVariant}"
+                               ReturnType="Done"
+                               ReturnCommand="{Binding SubmitAnswerCommand}" />
+                    </StackLayout>
+                    
+                    <!-- True/False -->
+                    <StackLayout IsVisible="{Binding CurrentQuestion.Type, Converter={StaticResource StringEqualsConverter}, ConverterParameter=true_false}"
+                               Spacing="10"
+                               Orientation="Horizontal"
+                               HorizontalOptions="Center">
+                        
+                        <Button Text="True"
+                                Command="{Binding SelectOptionCommand}"
+                                CommandParameter="True"
+                                BackgroundColor="{StaticResource Primary}"
+                                TextColor="{StaticResource OnPrimary}"
+                                WidthRequest="100"
+                                HeightRequest="50"
+                                CornerRadius="25" />
+                        
+                        <Button Text="False"
+                                Command="{Binding SelectOptionCommand}"
+                                CommandParameter="False"
+                                BackgroundColor="{StaticResource Secondary}"
+                                TextColor="{StaticResource OnSecondary}"
+                                WidthRequest="100"
+                                HeightRequest="50"
+                                CornerRadius="25" />
+                    </StackLayout>
+                    
+                    <!-- Feedback Section -->
+                    <StackLayout IsVisible="{Binding ShowFeedback}"
+                               Spacing="15">
+                        
+                        <!-- Divider -->
+                        <BoxView HeightRequest="1"
+                                BackgroundColor="{StaticResource Outline}"
+                                HorizontalOptions="FillAndExpand" />
+                        
+                        <!-- Feedback Header -->
+                        <StackLayout Orientation="Horizontal" 
+                                   HorizontalOptions="Center"
+                                   Spacing="10">
+                            <Label Text="{Binding IsAnswerCorrect, Converter={StaticResource BoolToEmojiConverter}}"
+                                   FontSize="24" />
+                            <Label Text="{Binding IsAnswerCorrect, Converter={StaticResource BoolToFeedbackTextConverter}}"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="{Binding IsAnswerCorrect, Converter={StaticResource BoolToColorConverter}}"
+                                   VerticalOptions="Center" />
+                        </StackLayout>
+                        
+                        <!-- XP Earned (if correct) -->
+                        <Label IsVisible="{Binding IsAnswerCorrect}"
+                               Text="{Binding CurrentQuestion.Points, StringFormat='+{0} XP earned!'}"
+                               TextColor="{StaticResource Primary}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center" />
+                        
+                        <!-- Explanation -->
+                        <Border IsVisible="{Binding CurrentQuestion.Explanation, Converter={StaticResource StringIsNotNullOrEmptyConverter}}"
+                                BackgroundColor="{StaticResource SurfaceVariant}"
+                                Stroke="{StaticResource Outline}"
+                                StrokeThickness="1"
+                                Padding="15">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <StackLayout Spacing="5">
+                                <Label Text="Explanation:"
+                                       FontSize="14"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource OnSurfaceVariant}" />
+                                <Label Text="{Binding CurrentQuestion.Explanation}"
+                                       FontSize="14"
+                                       TextColor="{StaticResource OnSurfaceVariant}"
+                                       LineHeight="1.4" />
+                            </StackLayout>
+                        </Border>
+                    </StackLayout>
+                </StackLayout>
+                
+                <!-- Quiz Completed -->
+                <StackLayout IsVisible="{Binding IsQuizCompleted}"
+                           Spacing="20"
+                           Padding="20">
+                    
+                    <Label Text="🎉 Quiz Completed!"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}"
+                           HorizontalOptions="Center" />
+                    
+                    <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                            Stroke="{StaticResource Outline}"
+                            StrokeThickness="1"
+                            Padding="20">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="15" />
+                        </Border.StrokeShape>
+                        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" 
+                              RowSpacing="10">
+                            
+                            <Label Grid.Row="0"
+                                   Text="{Binding QuizResult.Score, StringFormat='Score: {0}/{1}', ConverterParameter={Binding QuizResult.TotalPoints}}"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Center" />
+                            
+                            <Label Grid.Row="1"
+                                   Text="{Binding QuizResult.Accuracy, StringFormat='Accuracy: {0:P0}'}"
+                                   FontSize="16"
+                                   HorizontalOptions="Center" />
+                            
+                            <Label Grid.Row="2"
+                                   Text="{Binding QuizResult.XPEarned, StringFormat='XP Earned: +{0}'}"
+                                   FontSize="16"
+                                   TextColor="{StaticResource Primary}"
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Center" />
+                            
+                            <Label Grid.Row="3"
+                                   Text="{Binding QuizResult.TimeSpentSeconds, Converter={StaticResource SecondsToTimeConverter}}"
+                                   FontSize="14"
+                                   TextColor="{StaticResource OnSurfaceVariant}"
+                                   HorizontalOptions="Center" />
+                            
+                            <Label Grid.Row="4"
+                                   Text="{Binding QuizResult.IsPassed, Converter={StaticResource PassFailConverter}}"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="{Binding QuizResult.IsPassed, Converter={StaticResource BoolToColorConverter}}"
+                                   HorizontalOptions="Center" />
+                        </Grid>
+                    </Border>
+                    
+                    <!-- Action Buttons -->
+                    <StackLayout Orientation="Horizontal"
+                               HorizontalOptions="Center"
+                               Spacing="15">
+                        <Button Text="Restart Quiz"
+                                Command="{Binding RestartQuizCommand}"
+                                BackgroundColor="{StaticResource Secondary}"
+                                TextColor="{StaticResource OnSecondary}"
+                                WidthRequest="120"
+                                HeightRequest="45"
+                                CornerRadius="22" />
+                        
+                        <Button Text="Continue"
+                                Command="{Binding ExitQuizCommand}"
+                                BackgroundColor="{StaticResource Primary}"
+                                TextColor="{StaticResource OnPrimary}"
+                                WidthRequest="120"
+                                HeightRequest="45"
+                                CornerRadius="22" />
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+        
+        <!-- Action Button -->
+        <Button Grid.Row="3"
+                Text="{Binding ActionButtonText}"
+                Command="{Binding ShowFeedback, Converter={StaticResource ActionButtonCommandConverter}}"
+                IsEnabled="{Binding CanSubmitAnswer}"
+                IsVisible="{Binding IsQuizCompleted, Converter={StaticResource InverseBooleanConverter}}"
+                BackgroundColor="{StaticResource Primary}"
+                TextColor="{StaticResource OnPrimary}"
+                HeightRequest="56"
+                CornerRadius="28"
+                Margin="20,10" />
+    </Grid>
+</ContentPage>

@@ -46,7 +46,7 @@ public class StreakService : IStreakService
     private readonly ILogger<StreakService> _logger;
     
     // Streak milestone thresholds
-    private static readonly List<int> _streakMilestones = new() { 3, 7, 14, 30, 60, 100, 365 };
+    private static readonly List<int> _streakMilestones = [3, 7, 14, 30, 60, 100, 365];
     
     // Grace period and freeze settings
     private const int GRACE_PERIOD_HOURS = 4; // 4-hour grace period after midnight
@@ -108,7 +108,7 @@ public class StreakService : IStreakService
             return ServiceResult<int>.Failure($"Failed to update streak: {ex.Message}");
         }
     }
-    
+    //TODO: Implement the full query logic once IFirestoreRepository interface is complete
     public async Task<ServiceResult<StreakSnapshot>> GetCurrentStreakAsync(string userId, CancellationToken ct = default)
     {
         try
@@ -133,7 +133,7 @@ public class StreakService : IStreakService
             return ServiceResult<StreakSnapshot>.Failure($"Failed to get current streak: {ex.Message}");
         }
     }
-    
+    //TODO: Implement the full query logic once IFirestoreRepository interface is complete
     public async Task<ServiceResult<int>> GetLongestStreakAsync(string userId, CancellationToken ct = default)
     {
         try
@@ -301,7 +301,7 @@ public class StreakService : IStreakService
         // Store in subcollection users/{userId}/streaks/{snapshotId}
         await _firestoreRepository.SetDocumentAsync($"users/{userId}/streaks", snapshot.Id, snapshot, ct);
     }
-    
+    //TODO: Implement background service to call this method daily
     public async Task<ServiceResult<bool>> CheckStreakMaintenanceAsync(string userId, CancellationToken ct = default)
     {
         // This method would be called by a background service to check for broken streaks

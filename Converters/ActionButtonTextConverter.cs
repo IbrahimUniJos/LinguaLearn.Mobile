@@ -2,15 +2,15 @@ using System.Globalization;
 
 namespace LinguaLearn.Mobile.Converters;
 
-public class IntToBoolConverter : IValueConverter
+public class ActionButtonTextConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is int intValue)
+        if (value is bool showFeedback)
         {
-            return intValue > 0;
+            return showFeedback ? "Continue" : "Submit Answer";
         }
-        return false;
+        return "Continue";
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

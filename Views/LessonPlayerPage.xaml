@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="LinguaLearn.Mobile.Views.LessonPlayerPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:material="clr-namespace:HorusStudio.Maui.MaterialDesignControls;assembly=HorusStudio.Maui.MaterialDesignControls"
+             xmlns:viewmodels="clr-namespace:LinguaLearn.Mobile.ViewModels"
+             xmlns:components="clr-namespace:LinguaLearn.Mobile.Components"
+             x:DataType="viewmodels:LessonPlayerViewModel"
+             Title="{Binding CurrentLesson.Title}"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Progress Indicator -->
+        <components:LessonProgressIndicator Grid.Row="0"
+                                           CurrentSection="{Binding CurrentSectionIndex, Converter={StaticResource AddOneConverter}}"
+                                           TotalSections="{Binding Sections.Count}"
+                                           XPEarned="{Binding TotalXpEarned}"
+                                           SectionTitle="{Binding CurrentSection.Title}" />
+        
+        <!-- Lesson Content -->
+        <ScrollView Grid.Row="1" Padding="20">
+            <StackLayout Spacing="20">
+                <!-- Error Message -->
+                <Label Text="{Binding ErrorMessage}"
+                       IsVisible="{Binding ErrorMessage, Converter={StaticResource StringIsNotNullOrEmptyConverter}}"
+                       TextColor="{StaticResource Error}"
+                       FontFamily="OpenSansRegular"
+                       FontSize="16"
+                       HorizontalOptions="Center"
+                       Padding="10"
+                       BackgroundColor="{StaticResource ErrorContainer}"
+                        />
+                
+                <!-- Section Content -->
+                <components:SectionContentView Section="{Binding CurrentSection}"
+                                              UserAnswer="{Binding UserAnswer}"
+                                              ShowFeedback="{Binding ShowFeedback}"
+                                              IsCorrect="{Binding IsAnswerCorrect}"
+                                              FeedbackText="{Binding FeedbackMessage}"
+                                              PlayAudioCommand="{Binding PlaySectionAudioCommand}"
+                                              IsPlayingAudio="{Binding IsPlayingAudio}"
+                                              IsVisible="{Binding CurrentSection, Converter={StaticResource IsNotNullConverter}}" />
+                
+                <!-- Loading Indicator -->
+                <StackLayout IsVisible="{Binding IsLoading}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Spacing="10">
+                    <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                     Color="{StaticResource Primary}"
+                                     WidthRequest="40"
+                                     HeightRequest="40" />
+                    <Label Text="Loading..."
+                           FontFamily="OpenSansRegular"
+                           FontSize="16"
+                           TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}"
+                           HorizontalOptions="Center" />
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+        
+        <!-- Action Buttons -->
+        <StackLayout Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    Padding="20,10"
+                    Spacing="15"
+                    IsVisible="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}">
+            
+            <!-- Previous Button -->
+            <Button Text="◀ Previous"
+                    Command="{Binding NavigateToPreviousSectionCommand}"
+                    IsVisible="{Binding CanNavigatePrevious}"
+                    BackgroundColor="{StaticResource SurfaceVariant}"
+                    TextColor="{StaticResource OnSurfaceVariant}"
+                    HeightRequest="48"
+                    CornerRadius="24"
+                    WidthRequest="120" />
+            
+            <!-- Main Action Button -->
+            <material:MaterialButton x:Name="MainActionButton"
+                                   Text="{Binding ShowFeedback, Converter={StaticResource ActionButtonTextConverter}}"
+                                   Command="{Binding ContinueCommand}"
+                                   BackgroundColor="{StaticResource Primary}"
+                                   TextColor="{StaticResource OnPrimary}"
+                                   HeightRequest="56"
+                                   HorizontalOptions="FillAndExpand"
+                                   CornerRadius="28"
+                                   FontSize="16"
+                                   FontAttributes="Bold" />
+            
+            <!-- Skip Button (for non-interactive sections) -->
+            <Button Text="Skip ▶"
+                    Command="{Binding NavigateToNextSectionCommand}"
+                    IsVisible="{Binding CurrentSection.Type, Converter={StaticResource SectionTypeToSkipVisibilityConverter}}"
+                    BackgroundColor="{StaticResource SurfaceVariant}"
+                    TextColor="{StaticResource OnSurfaceVariant}"
+                    HeightRequest="48"
+                    CornerRadius="24"
+                    WidthRequest="100" />
+        </StackLayout>
+    </Grid>
+</ContentPage>

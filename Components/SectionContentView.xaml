@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView x:Class="LinguaLearn.Mobile.Components.SectionContentView"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:material="clr-namespace:HorusStudio.Maui.MaterialDesignControls;assembly=HorusStudio.Maui.MaterialDesignControls"
+             xmlns:models="clr-namespace:LinguaLearn.Mobile.Models"
+             x:DataType="models:LessonSection">
+
+    <material:MaterialCard CornerRadius="15"
+                           Padding="20"
+                           BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+        <StackLayout Spacing="20">
+            <!-- Section Header -->
+            <StackLayout Orientation="Horizontal" Spacing="10">
+                <material:MaterialBadge x:Name="SectionTypeBadge"
+                                       Text="{Binding Type}"
+                                       BackgroundColor="{StaticResource Primary}"
+                                       TextColor="{StaticResource OnPrimary}"
+                                       CornerRadius="12"
+                                       FontSize="12"
+                                       HeightRequest="24" />
+                
+                <Label Text="{Binding Title}"
+                       FontFamily="OpenSansSemibold"
+                       FontSize="20"
+                       TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Fill" />
+            </StackLayout>
+            
+            <!-- Content Area -->
+            <StackLayout x:Name="ContentArea" Spacing="15">
+                <!-- Text Content -->
+                <Label x:Name="ContentLabel"
+                       Text="{Binding Content}"
+                       FontFamily="OpenSansRegular"
+                       FontSize="16"
+                       TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}"
+                       LineHeight="1.4" />
+                
+                <!-- Audio Player (for pronunciation sections) -->
+                <StackLayout x:Name="AudioSection"
+                           Spacing="10"
+                           IsVisible="False">
+                    <Button x:Name="PlayAudioButton"
+                            Text="🔊 Play Pronunciation"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="{StaticResource OnPrimary}"
+                            CornerRadius="8"
+                            HeightRequest="48" />
+                    
+                    <ActivityIndicator x:Name="AudioLoadingIndicator"
+                                     IsRunning="False"
+                                     IsVisible="False"
+                                     Color="{StaticResource Primary}" />
+                </StackLayout>
+                
+                <!-- Answer Input (for interactive sections) -->
+                <StackLayout x:Name="InputSection"
+                           Spacing="10"
+                           IsVisible="False">
+                    <material:MaterialTextField x:Name="AnswerInput"
+                                              Label="Your Answer"
+                                              Placeholder="Type your answer here"
+                                              ReturnType="Done"
+                                              BackgroundColor="Transparent"
+                                              CornerRadius="8" />
+                </StackLayout>
+                
+                <!-- Multiple Choice Options -->
+                <StackLayout x:Name="MultipleChoiceSection"
+                           Spacing="10"
+                           IsVisible="False">
+                    <!-- Options will be added dynamically -->
+                </StackLayout>
+            </StackLayout>
+            
+            <!-- Feedback Section -->
+            <StackLayout x:Name="FeedbackSection"
+                       Spacing="10"
+                       IsVisible="False">
+                <material:MaterialDivider />
+                
+                <StackLayout Orientation="Horizontal" 
+                           HorizontalOptions="Center"
+                           Spacing="10">
+                    <Label x:Name="FeedbackIcon"
+                           FontSize="24" />
+                    <Label x:Name="FeedbackLabel"
+                           FontFamily="OpenSansSemibold"
+                           FontSize="18"
+                           VerticalOptions="Center" />
+                </StackLayout>
+                
+                <Label x:Name="FeedbackMessage"
+                       FontFamily="OpenSansRegular"
+                       FontSize="14"
+                       TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}"
+                       HorizontalOptions="Center" />
+            </StackLayout>
+        </StackLayout>
+    </material:MaterialCard>
+</ContentView>

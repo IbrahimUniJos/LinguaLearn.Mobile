@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="LinguaLearn.Mobile.Views.LessonsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:material="clr-namespace:HorusStudio.Maui.MaterialDesignControls;assembly=HorusStudio.Maui.MaterialDesignControls"
+             xmlns:viewmodels="clr-namespace:LinguaLearn.Mobile.ViewModels"
+             xmlns:models="clr-namespace:LinguaLearn.Mobile.Models"
+             x:DataType="viewmodels:LessonsViewModel"
+             Title="Lessons"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
+
+    <RefreshView IsRefreshing="{Binding IsLoading}"
+                 Command="{Binding RefreshCommand}">
+        <ScrollView>
+            <StackLayout Spacing="20" Padding="20">
+                
+                <!-- Error Message -->
+                <Label Text="{Binding ErrorMessage}"
+                       IsVisible="{Binding ErrorMessage, Converter={StaticResource StringIsNotNullOrEmptyConverter}}"
+                       TextColor="{StaticResource Error}"
+                       FontFamily="OpenSansRegular"
+                       FontSize="16"
+                       HorizontalOptions="Center"
+                       Padding="10"
+                       BackgroundColor="{StaticResource ErrorContainer}"
+                       />
+                
+                <!-- Continue Learning Section -->
+                <StackLayout IsVisible="{Binding ContinueLearningLessons.Count, Converter={StaticResource IntToBoolConverter}}"
+                           Spacing="15">
+                    <Label Text="Continue Learning"
+                           FontFamily="OpenSansSemibold"
+                           FontSize="24"
+                           TextColor="{AppThemeBinding Light={StaticResource OnBackgroundLight}, Dark={StaticResource OnBackgroundDark}}" />
+                    
+                    <CollectionView ItemsSource="{Binding ContinueLearningLessons}"
+                                    SelectionMode="None"
+                                    HeightRequest="200">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="15" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Lesson">
+                                <material:MaterialCard CornerRadius="15"
+                                                       Padding="15"
+                                                       WidthRequest="280"
+                                                       BackgroundColor="{StaticResource Primary}">
+                                    <StackLayout Spacing="10">
+                                        <Label Text="{Binding Title}"
+                                               FontFamily="OpenSansSemibold"
+                                               FontSize="18"
+                                               TextColor="{StaticResource OnPrimary}"
+                                               MaxLines="2" />
+                                        
+                                        <Label Text="{Binding Description}"
+                                               FontFamily="OpenSansRegular"
+                                               FontSize="14"
+                                               TextColor="{StaticResource OnPrimary}"
+                                               MaxLines="3" />
+                                        
+                                        <StackLayout Orientation="Horizontal"
+                                                   Spacing="10">
+                                            <Label Text="{Binding Difficulty, Converter={StaticResource DifficultyIconConverter}}"
+                                                   FontSize="16" />
+                                            <Label Text="{Binding EstimatedDurationMinutes, Converter={StaticResource EstimatedTimeConverter}}"
+                                                   FontFamily="OpenSansRegular"
+                                                   FontSize="12"
+                                                   TextColor="{StaticResource OnPrimary}"
+                                                   VerticalOptions="Center" />
+                                        </StackLayout>
+                                        
+                                        <Button Text="Continue"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:LessonsViewModel}}, Path=StartLessonCommand}"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="{StaticResource OnPrimary}"
+                                                TextColor="{StaticResource Primary}"
+                                                CornerRadius="8"
+                                                HeightRequest="40"
+                                                FontSize="14" />
+                                    </StackLayout>
+                                    <material:MaterialCard.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:LessonsViewModel}}, Path=StartLessonCommand}"
+                                                            CommandParameter="{Binding .}" />
+                                    </material:MaterialCard.GestureRecognizers>
+                                </material:MaterialCard>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+                
+                <!-- Recommended Lessons Section -->
+                <StackLayout IsVisible="{Binding RecommendedLessons.Count, Converter={StaticResource IntToBoolConverter}}"
+                           Spacing="15">
+                    <Label Text="Recommended for You"
+                           FontFamily="OpenSansSemibold"
+                           FontSize="24"
+                           TextColor="{AppThemeBinding Light={StaticResource OnBackgroundLight}, Dark={StaticResource OnBackgroundDark}}" />
+                    
+                    <CollectionView ItemsSource="{Binding RecommendedLessons}"
+                                    SelectionMode="None"
+                                    HeightRequest="160">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="15" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Lesson">
+                                <material:MaterialCard CornerRadius="15"
+                                                       Padding="15"
+                                                       WidthRequest="250"
+                                                       BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+                                    <StackLayout Spacing="8">
+                                        <Label Text="{Binding Title}"
+                                               FontFamily="OpenSansSemibold"
+                                               FontSize="16"
+                                               TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}"
+                                               MaxLines="2" />
+                                        
+                                        <StackLayout Orientation="Horizontal"
+                                                   Spacing="10">
+                                            <Label Text="{Binding Difficulty, Converter={StaticResource DifficultyIconConverter}}"
+                                                   FontSize="14" />
+                                            <Label Text="{Binding Difficulty}"
+                                                   FontFamily="OpenSansRegular"
+                                                   FontSize="12"
+                                                   TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}"
+                                                   VerticalOptions="Center" />
+                                        </StackLayout>
+                                        
+                                        <Button Text="Start Lesson"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:LessonsViewModel}}, Path=StartLessonCommand}"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="{StaticResource Primary}"
+                                                TextColor="{StaticResource OnPrimary}"
+                                                CornerRadius="8"
+                                                HeightRequest="36"
+                                                FontSize="12" />
+                                    </StackLayout>
+                                </material:MaterialCard>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+                
+                <!-- Filters -->
+                <StackLayout Spacing="15">
+                    <Label Text="All Lessons"
+                           FontFamily="OpenSansSemibold"
+                           FontSize="24"
+                           TextColor="{AppThemeBinding Light={StaticResource OnBackgroundLight}, Dark={StaticResource OnBackgroundDark}}" />
+                    
+                    <StackLayout Orientation="Horizontal"
+                               Spacing="15">
+                        <material:MaterialPicker Label="Language"
+                                               ItemsSource="{Binding Languages}"
+                                               SelectedItem="{Binding SelectedLanguage}"
+                                               HorizontalOptions="Fill"
+                                               BackgroundColor="Transparent" />
+                        
+                        <material:MaterialPicker Label="Difficulty"
+                                               ItemsSource="{Binding Difficulties}"
+                                               SelectedItem="{Binding SelectedDifficulty}"
+                                               HorizontalOptions="Fill"
+                                               BackgroundColor="Transparent" />
+                    </StackLayout>
+                </StackLayout>
+                
+                <!-- All Lessons List -->
+                <CollectionView ItemsSource="{Binding Lessons}"
+                                SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Lesson">
+                            <material:MaterialCard CornerRadius="15"
+                                                   Padding="20"
+                                                   Margin="0,0,0,15"
+                                                   BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+                                <Grid ColumnDefinitions="*,Auto" 
+                                      RowDefinitions="Auto,Auto,Auto,Auto"
+                                      ColumnSpacing="15"
+                                      RowSpacing="8">
+                                    
+                                    <!-- Title -->
+                                    <Label Grid.Row="0" 
+                                           Grid.Column="0"
+                                           Text="{Binding Title}"
+                                           FontFamily="OpenSansSemibold"
+                                           FontSize="18"
+                                           TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}" />
+                                    
+                                    <!-- XP Reward -->
+                                    <material:MaterialBadge Grid.Row="0"
+                                                           Grid.Column="1"
+                                                           Text="{Binding XPReward, StringFormat='{0} XP'}"
+                                                           BackgroundColor="{StaticResource Primary}"
+                                                           TextColor="{StaticResource OnPrimary}"
+                                                           CornerRadius="12"
+                                                           FontSize="12"
+                                                           HeightRequest="24" />
+                                    
+                                    <!-- Description -->
+                                    <Label Grid.Row="1" 
+                                           Grid.Column="0"
+                                           Grid.ColumnSpan="2"
+                                           Text="{Binding Description}"
+                                           FontFamily="OpenSansRegular"
+                                           FontSize="14"
+                                           TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}"
+                                           MaxLines="2" />
+                                    
+                                    <!-- Metadata -->
+                                    <StackLayout Grid.Row="2"
+                                               Grid.Column="0"
+                                               Grid.ColumnSpan="2"
+                                               Orientation="Horizontal"
+                                               Spacing="15">
+                                        <StackLayout Orientation="Horizontal" Spacing="5">
+                                            <Label Text="{Binding Difficulty, Converter={StaticResource DifficultyIconConverter}}"
+                                                   FontSize="16" />
+                                            <Label Text="{Binding Difficulty}"
+                                                   FontFamily="OpenSansRegular"
+                                                   FontSize="12"
+                                                   TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}"
+                                                   VerticalOptions="Center" />
+                                        </StackLayout>
+                                        
+                                        <StackLayout Orientation="Horizontal" Spacing="5">
+                                            <Label Text="⏱️"
+                                                   FontSize="14" />
+                                            <Label Text="{Binding EstimatedDurationMinutes, Converter={StaticResource EstimatedTimeConverter}}"
+                                                   FontFamily="OpenSansRegular"
+                                                   FontSize="12"
+                                                   TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}"
+                                                   VerticalOptions="Center" />
+                                        </StackLayout>
+                                        
+                                        <StackLayout Orientation="Horizontal" Spacing="5">
+                                            <Label Text="📚"
+                                                   FontSize="14" />
+                                            <Label Text="{Binding Sections.Count, StringFormat='{0} sections'}"
+                                                   FontFamily="OpenSansRegular"
+                                                   FontSize="12"
+                                                   TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}"
+                                                   VerticalOptions="Center" />
+                                        </StackLayout>
+                                    </StackLayout>
+                                    
+                                    <!-- Action Buttons -->
+                                    <StackLayout Grid.Row="3"
+                                               Grid.Column="0"
+                                               Grid.ColumnSpan="2"
+                                               Orientation="Horizontal"
+                                               Spacing="10">
+                                        <Button Text="Start Lesson"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:LessonsViewModel}}, Path=StartLessonCommand}"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="{StaticResource Primary}"
+                                                TextColor="{StaticResource OnPrimary}"
+                                                CornerRadius="8"
+                                                HeightRequest="40"
+                                                HorizontalOptions="Fill" />
+                                        
+                                        <Button Text="Details"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:LessonsViewModel}}, Path=ViewLessonDetailsCommand}"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="Transparent"
+                                                TextColor="{StaticResource Primary}"
+                                                BorderColor="{StaticResource Primary}"
+                                                BorderWidth="1"
+                                                CornerRadius="8"
+                                                HeightRequest="40"
+                                                WidthRequest="80" />
+                                    </StackLayout>
+                                </Grid>
+                            </material:MaterialCard>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                
+                <!-- Loading Indicator -->
+                <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                 IsVisible="{Binding IsLoading}"
+                                 Color="{StaticResource Primary}"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center" />
+            </StackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

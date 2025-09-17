@@ -52,18 +52,29 @@ namespace LinguaLearn.Mobile
             builder.Services.AddFirebaseServices(builder.Configuration);
             builder.Services.AddTransient<IActivityService, ActivityService>();
             builder.Services.AddTransient<TestDataSeeder>();
+            
+            // Add game logic services
+            builder.Services.AddTransient<Services.Lessons.ILessonService, Services.Lessons.LessonService>();
+            builder.Services.AddTransient<Services.Quizzes.IQuizService, Services.Quizzes.QuizService>();
 
             // Add ViewModels
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<SignupViewModel>();
             builder.Services.AddTransient<OnboardingViewModel>();
             builder.Services.AddTransient<UserHomepageViewModel>();
+            builder.Services.AddTransient<LessonsViewModel>();
+            builder.Services.AddTransient<LessonPlayerViewModel>();
+            builder.Services.AddTransient<QuizViewModel>();
 
             // Add Views
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<RegisterPage>();
             builder.Services.AddTransient<OnboardingPage>();
             builder.Services.AddTransient<Views.UserHomepagePage>();
+            builder.Services.AddTransient<Views.LessonsPage>();
+            builder.Services.AddTransient<Views.LessonPlayerPage>();
+            builder.Services.AddTransient<Views.LessonCompletePage>();
+            builder.Services.AddTransient<Views.QuizPage>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

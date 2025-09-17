@@ -21,6 +21,18 @@
     <ShellContent Title="Onboarding"
                   ContentTemplate="{DataTemplate onboarding:OnboardingPage}"
                   Route="onboarding" />
+    
+    <ShellContent Title="Lesson Player"
+                  ContentTemplate="{DataTemplate views:LessonPlayerPage}"
+                  Route="lessonPlayer" />
+    
+    <ShellContent Title="Lesson Complete"
+                  ContentTemplate="{DataTemplate views:LessonCompletePage}"
+                  Route="lessonComplete" />
+    
+    <ShellContent Title="Quiz"
+                  ContentTemplate="{DataTemplate views:QuizPage}"
+                  Route="quiz" />
 
     <!--  Main App Navigation (Auth Required)  -->
     <TabBar Route="main">
@@ -29,7 +41,7 @@
         </Tab>
 
         <Tab Title="Lessons" Icon="lessons.png">
-            <ShellContent Title="Lessons" ContentTemplate="{DataTemplate local:MainPage}" Route="lessons" />
+            <ShellContent Title="Lessons" ContentTemplate="{DataTemplate views:LessonsPage}" Route="lessons" />
         </Tab>
 
         <Tab Title="Leaderboard" Icon="leaderboard.png">

@@ -11,6 +11,11 @@ using LinguaLearn.Mobile.Services.Auth;
 using LinguaLearn.Mobile.Services.Data;
 using LinguaLearn.Mobile.Services.Storage;
 using LinguaLearn.Mobile.Services.User;
+using LinguaLearn.Mobile.Services.Lessons;
+using LinguaLearn.Mobile.Services.Quizzes;
+using LinguaLearn.Mobile.Services.Progress;
+using LinguaLearn.Mobile.Services.Audio;
+using LinguaLearn.Mobile.Services.Activity;
 using LinguaLearn.Mobile.Models;
 using LinguaLearn.Mobile.Models.Converters;
 
@@ -114,6 +119,11 @@ public static class ServiceCollectionExtensions
 
         // Register Business Services
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ILessonService, LessonService>();
+        services.AddScoped<IQuizService, QuizService>();
+        services.AddScoped<IProgressService, ProgressService>();
+        services.AddScoped<IAudioService, AudioService>();
+        services.AddScoped<IActivityService, ActivityService>();
 
         return services;
     }
