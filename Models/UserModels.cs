@@ -1,4 +1,5 @@
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using Google.Cloud.Firestore;
 
 namespace LinguaLearn.Mobile.Models;
 
@@ -6,100 +7,103 @@ namespace LinguaLearn.Mobile.Models;
 /// Main user profile document stored in Firestore users/{userId}
 /// Following Firestore best practices: flat structure, camelCase naming, UTC timestamps
 /// </summary>
+[FirestoreData]
 public class UserProfile
 {
-    [JsonPropertyName("id")]
+    [FirestoreProperty("id")]
     public string Id { get; set; } = string.Empty;
     
-    [JsonPropertyName("email")]
+    [FirestoreProperty("email")]
     public string Email { get; set; } = string.Empty;
     
-    [JsonPropertyName("displayName")]
+    [FirestoreProperty("displayName")]
     public string DisplayName { get; set; } = string.Empty;
     
-    [JsonPropertyName("nativeLanguage")]
+    [FirestoreProperty("nativeLanguage")]
     public string? NativeLanguage { get; set; }
     
-    [JsonPropertyName("targetLanguage")]
+    [FirestoreProperty("targetLanguage")]
     public string? TargetLanguage { get; set; }
     
     // Gamification Stats
-    [JsonPropertyName("xp")]
+    [FirestoreProperty("xp")]
     public int XP { get; set; } = 0;
     
-    [JsonPropertyName("level")]
+    [FirestoreProperty("level")]
     public int Level { get; set; } = 1;
     
-    [JsonPropertyName("streakCount")]
+    [FirestoreProperty("streakCount")]
     public int StreakCount { get; set; } = 0;
     
-    [JsonPropertyName("lastActiveDate")]
+    [FirestoreProperty("lastActiveDate")]
     public DateTime? LastActiveDate { get; set; }
     
-    [JsonPropertyName("streakFreezeTokens")]
+    [FirestoreProperty("streakFreezeTokens")]
     public int StreakFreezeTokens { get; set; } = 0;
     
     // Onboarding & Preferences
-    [JsonPropertyName("hasCompletedOnboarding")]
+    [FirestoreProperty("hasCompletedOnboarding")]
     public bool HasCompletedOnboarding { get; set; } = false;
     
-    [JsonPropertyName("preferences")]
+    [FirestoreProperty("preferences")]
     public UserPreferences Preferences { get; set; } = new();
     
     // Earned Badges (denormalized for quick access)
-    [JsonPropertyName("badges")]
+    [FirestoreProperty("badges")]
     public List<UserBadge> Badges { get; set; } = new();
     
     // Metadata
-    [JsonPropertyName("createdAt")]
+    [FirestoreProperty("createdAt")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
-    [JsonPropertyName("updatedAt")]
+    [FirestoreProperty("updatedAt")]
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
-    [JsonPropertyName("version")]
+    [FirestoreProperty("version")]
     public int Version { get; set; } = 1;
 }
 
 /// <summary>
 /// User preferences for app behavior and notifications
 /// </summary>
+[FirestoreData]
 public class UserPreferences
 {
-    [JsonPropertyName("soundEnabled")]
+    [FirestoreProperty("soundEnabled")]
     public bool SoundEnabled { get; set; } = true;
     
-    [JsonPropertyName("vibrationEnabled")]
+    [FirestoreProperty("vibrationEnabled")]
     public bool VibrationEnabled { get; set; } = true;
     
-    [JsonPropertyName("dailyReminderEnabled")]
+    [FirestoreProperty("dailyReminderEnabled")]
     public bool DailyReminderEnabled { get; set; } = true;
     
-    [JsonPropertyName("dailyReminderTime")]
+    [FirestoreProperty("dailyReminderTime")]
     public TimeSpan DailyReminderTime { get; set; } = new(19, 0, 0); // 7 PM
     
-    [JsonPropertyName("weeklyGoal")]
+    [FirestoreProperty("weeklyGoal")]
     public int WeeklyGoal { get; set; } = 5; // 5 lessons per week
     
-    [JsonPropertyName("difficultyPreference")]
+    [FirestoreProperty("difficultyPreference")]
     public DifficultyLevel DifficultyPreference { get; set; } = DifficultyLevel.Adaptive;
     
-    [JsonPropertyName("pronunciationSensitivity")]
+    [FirestoreProperty("pronunciationSensitivity")]
     public PronunciationSensitivity PronunciationSensitivity { get; set; } = PronunciationSensitivity.Medium;
     
-    [JsonPropertyName("theme")]
+    [FirestoreProperty("theme")]
     public AppTheme Theme { get; set; } = AppTheme.System;
 }
 
 /// <summary>
 /// Badge earned by user with timestamp
 /// </summary>
+[FirestoreData]
 public class UserBadge
 {
-    [JsonPropertyName("badgeId")]
+    [FirestoreProperty("badgeId")]
     public string BadgeId { get; set; } = string.Empty;
     
-    [JsonPropertyName("earnedAt")]
+    [FirestoreProperty("earnedAt")]
     public DateTime EarnedAt { get; set; } = DateTime.UtcNow;
 }
 
@@ -107,33 +111,34 @@ public class UserBadge
 /// Streak snapshot for detailed streak tracking
 /// Stored in users/{userId}/streaks/{snapshotId} subcollection
 /// </summary>
+[FirestoreData]
 public class StreakSnapshot
 {
-    [JsonPropertyName("id")]
+    [FirestoreProperty("id")]
     public string Id { get; set; } = string.Empty;
     
-    [JsonPropertyName("userId")]
+    [FirestoreProperty("userId")]
     public string UserId { get; set; } = string.Empty;
     
-    [JsonPropertyName("startDate")]
+    [FirestoreProperty("startDate")]
     public DateTime StartDate { get; set; }
     
-    [JsonPropertyName("endDate")]
+    [FirestoreProperty("endDate")]
     public DateTime? EndDate { get; set; }
     
-    [JsonPropertyName("currentCount")]
+    [FirestoreProperty("currentCount")]
     public int CurrentCount { get; set; }
     
-    [JsonPropertyName("maxCount")]
+    [FirestoreProperty("maxCount")]
     public int MaxCount { get; set; }
     
-    [JsonPropertyName("isActive")]
+    [FirestoreProperty("isActive")]
     public bool IsActive { get; set; } = true;
     
-    [JsonPropertyName("freezeTokensUsed")]
+    [FirestoreProperty("freezeTokensUsed")]
     public int FreezeTokensUsed { get; set; } = 0;
     
-    [JsonPropertyName("createdAt")]
+    [FirestoreProperty("createdAt")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
 
@@ -141,57 +146,59 @@ public class StreakSnapshot
 /// User statistics aggregated for display
 /// Computed from progress records and cached in Firestore
 /// </summary>
+[FirestoreData]
 public class UserStats
 {
-    [JsonPropertyName("userId")]
+    [FirestoreProperty("userId")]
     public string UserId { get; set; } = string.Empty;
     
-    [JsonPropertyName("totalLessonsCompleted")]
+    [FirestoreProperty("totalLessonsCompleted")]
     public int TotalLessonsCompleted { get; set; } = 0;
     
-    [JsonPropertyName("totalQuizzesCompleted")]
+    [FirestoreProperty("totalQuizzesCompleted")]
     public int TotalQuizzesCompleted { get; set; } = 0;
     
-    [JsonPropertyName("totalXPEarned")]
+    [FirestoreProperty("totalXPEarned")]
     public int TotalXPEarned { get; set; } = 0;
     
-    [JsonPropertyName("averageQuizAccuracy")]
+    [FirestoreProperty("averageQuizAccuracy")]
     public double AverageQuizAccuracy { get; set; } = 0.0;
     
-    [JsonPropertyName("totalStudyTimeMinutes")]
+    [FirestoreProperty("totalStudyTimeMinutes")]
     public int TotalStudyTimeMinutes { get; set; } = 0;
     
-    [JsonPropertyName("longestStreak")]
+    [FirestoreProperty("longestStreak")]
     public int LongestStreak { get; set; } = 0;
     
-    [JsonPropertyName("badgesEarned")]
+    [FirestoreProperty("badgesEarned")]
     public int BadgesEarned { get; set; } = 0;
     
-    [JsonPropertyName("weeklyProgress")]
+    [FirestoreProperty("weeklyProgress")]
     public WeeklyProgress CurrentWeek { get; set; } = new();
     
-    [JsonPropertyName("lastUpdated")]
+    [FirestoreProperty("lastUpdated")]
     public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
 }
 
 /// <summary>
 /// Weekly progress tracking for goals
 /// </summary>
+[FirestoreData]
 public class WeeklyProgress
 {
-    [JsonPropertyName("weekStartDate")]
+    [FirestoreProperty("weekStartDate")]
     public DateTime WeekStartDate { get; set; }
     
-    [JsonPropertyName("lessonsCompleted")]
+    [FirestoreProperty("lessonsCompleted")]
     public int LessonsCompleted { get; set; } = 0;
     
-    [JsonPropertyName("xpEarned")]
+    [FirestoreProperty("xpEarned")]
     public int XPEarned { get; set; } = 0;
     
-    [JsonPropertyName("goal")]
+    [FirestoreProperty("goal")]
     public int Goal { get; set; } = 5;
     
-    [JsonPropertyName("dailyActivity")]
+    [FirestoreProperty("dailyActivity")]
     public Dictionary<string, bool> DailyActivity { get; set; } = new();
 }
 
@@ -213,21 +220,22 @@ public class UserSession
 /// <summary>
 /// Available languages for learning
 /// </summary>
+[FirestoreData]
 public class LanguageOption
 {
-    [JsonPropertyName("code")]
+    [FirestoreProperty("code")]
     public string Code { get; set; } = string.Empty;
     
-    [JsonPropertyName("name")]
+    [FirestoreProperty("name")]
     public string Name { get; set; } = string.Empty;
     
-    [JsonPropertyName("nativeName")]
+    [FirestoreProperty("nativeName")]
     public string NativeName { get; set; } = string.Empty;
     
-    [JsonPropertyName("flagEmoji")]
+    [FirestoreProperty("flagEmoji")]
     public string FlagEmoji { get; set; } = string.Empty;
     
-    [JsonPropertyName("isAvailable")]
+    [FirestoreProperty("isAvailable")]
     public bool IsAvailable { get; set; } = true;
 }
 
@@ -262,16 +270,16 @@ public static class AvailableLanguages
 {
     public static readonly List<LanguageOption> All = new()
     {
-        new() { Code = "en", Name = "English", NativeName = "English", FlagEmoji = "????", IsAvailable = true },
-        new() { Code = "es", Name = "Spanish", NativeName = "Espa�ol", FlagEmoji = "????", IsAvailable = true },
-        new() { Code = "fr", Name = "French", NativeName = "Fran�ais", FlagEmoji = "????", IsAvailable = true },
-        new() { Code = "de", Name = "German", NativeName = "Deutsch", FlagEmoji = "????", IsAvailable = true },
-        new() { Code = "it", Name = "Italian", NativeName = "Italiano", FlagEmoji = "????", IsAvailable = true },
-        new() { Code = "pt", Name = "Portuguese", NativeName = "Portugu�s", FlagEmoji = "????", IsAvailable = true },
-        new() { Code = "ja", Name = "Japanese", NativeName = "???", FlagEmoji = "????", IsAvailable = true },
-        new() { Code = "ko", Name = "Korean", NativeName = "???", FlagEmoji = "????", IsAvailable = true },
-        new() { Code = "zh", Name = "Chinese", NativeName = "??", FlagEmoji = "????", IsAvailable = true },
-        new() { Code = "ar", Name = "Arabic", NativeName = "???????", FlagEmoji = "????", IsAvailable = true }
+        new() { Code = "en", Name = "English", NativeName = "English", FlagEmoji = "🇺🇸", IsAvailable = true },
+        new() { Code = "es", Name = "Spanish", NativeName = "Español", FlagEmoji = "🇪🇸", IsAvailable = true },
+        new() { Code = "fr", Name = "French", NativeName = "Français", FlagEmoji = "🇫🇷", IsAvailable = true },
+        new() { Code = "de", Name = "German", NativeName = "Deutsch", FlagEmoji = "🇩🇪", IsAvailable = true },
+        new() { Code = "it", Name = "Italian", NativeName = "Italiano", FlagEmoji = "🇮🇹", IsAvailable = true },
+        new() { Code = "pt", Name = "Portuguese", NativeName = "Português", FlagEmoji = "🇵🇹", IsAvailable = true },
+        new() { Code = "ja", Name = "Japanese", NativeName = "日本語", FlagEmoji = "🇯🇵", IsAvailable = true },
+        new() { Code = "ko", Name = "Korean", NativeName = "한국어", FlagEmoji = "🇰🇷", IsAvailable = true },
+        new() { Code = "zh", Name = "Chinese", NativeName = "中文", FlagEmoji = "🇨🇳", IsAvailable = true },
+        new() { Code = "ar", Name = "Arabic", NativeName = "العربية", FlagEmoji = "🇸🇦", IsAvailable = true }
     };
     
     public static LanguageOption? GetByCode(string code) 

@@ -52,4 +52,7 @@ public interface IUserService
     // Language Support
     Task<ServiceResult<List<LanguageOption>>> GetAvailableLanguagesAsync(CancellationToken ct = default);
     Task<ServiceResult<bool>> SetLanguagePreferencesAsync(string userId, string nativeLanguage, string targetLanguage, CancellationToken ct = default);
+    
+    // Current User
+    Task<string?> GetCurrentUserIdAsync(CancellationToken ct = default);
 }

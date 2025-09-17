@@ -4,6 +4,7 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:LinguaLearn.Mobile"
        xmlns:auth="clr-namespace:LinguaLearn.Mobile.Views.Auth"
+       xmlns:onboarding="clr-namespace:LinguaLearn.Mobile.Views.Onboarding"
        Title="LinguaLearn"
        FlyoutBehavior="Disabled">
 
@@ -15,6 +16,10 @@
     <ShellContent Title="Register" 
                   ContentTemplate="{DataTemplate auth:RegisterPage}" 
                   Route="register" />
+    
+    <ShellContent Title="Onboarding"
+                  ContentTemplate="{DataTemplate onboarding:OnboardingPage}"
+                  Route="onboarding" />
 
     <!--  Main App Navigation (Auth Required)  -->
     <TabBar Route="main">
@@ -22,15 +27,15 @@
             <ShellContent Title="Home" ContentTemplate="{DataTemplate local:MainPage}" Route="home" />
         </Tab>
 
-        <Tab Title="Lessons" Icon="book.png">
+        <Tab Title="Lessons" Icon="lessons.png">
             <ShellContent Title="Lessons" ContentTemplate="{DataTemplate local:MainPage}" Route="lessons" />
         </Tab>
 
-        <Tab Title="Leaderboard" Icon="trophy.png">
+        <Tab Title="Leaderboard" Icon="leaderboard.png">
             <ShellContent Title="Leaderboard" ContentTemplate="{DataTemplate local:MainPage}" Route="leaderboard" />
         </Tab>
 
-        <Tab Title="Profile" Icon="person.png">
+        <Tab Title="Profile" Icon="profile.png">
             <ShellContent Title="Profile" ContentTemplate="{DataTemplate local:MainPage}" Route="profile" />
         </Tab>
     </TabBar>

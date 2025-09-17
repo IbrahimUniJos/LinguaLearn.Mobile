@@ -147,7 +147,7 @@ public partial class SignupViewModel : ObservableValidator
                 _logger.LogInformation("Sign up successful for user: {Email}", Email);
                 Password = string.Empty;
                 ConfirmPassword = string.Empty;
-                await Shell.Current.GoToAsync("//main/home");
+                await Shell.Current.GoToAsync("//onboarding");
             }
             else
             {

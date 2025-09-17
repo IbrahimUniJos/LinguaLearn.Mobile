@@ -10,6 +10,9 @@ using LinguaLearn.Mobile.Configuration;
 using LinguaLearn.Mobile.Services.Auth;
 using LinguaLearn.Mobile.Services.Data;
 using LinguaLearn.Mobile.Services.Storage;
+using LinguaLearn.Mobile.Services.User;
+using LinguaLearn.Mobile.Models;
+using LinguaLearn.Mobile.Models.Converters;
 
 namespace LinguaLearn.Mobile.Extensions;
 
@@ -83,10 +86,20 @@ public static class ServiceCollectionExtensions
                 using var stream = FileSystem.OpenAppPackageFileAsync(firestoreConfig.CredentialsFileName).GetAwaiter().GetResult();
                 var credential = GoogleCredential.FromStream(stream);
                 
+                // Create converter registry with custom converters
+                var converterRegistry = new ConverterRegistry
+                {
+                    new DifficultyLevelConverter(),
+                    new PronunciationSensitivityConverter(),
+                    new AppThemeConverter(),
+                    new TimeSpanConverter()
+                };
+                
                 return new FirestoreDbBuilder
                 {
                     ProjectId = firestoreConfig.ProjectId,
-                    Credential = credential
+                    Credential = credential,
+                    ConverterRegistry = converterRegistry
                 }.Build();
             }
             catch (Exception ex)
@@ -98,6 +111,9 @@ public static class ServiceCollectionExtensions
 
         // Register Firestore Repository
         services.AddScoped<IFirestoreRepository, FirestoreRepository>();
+
+        // Register Business Services
+        services.AddScoped<IUserService, UserService>();
 
         return services;
     }
