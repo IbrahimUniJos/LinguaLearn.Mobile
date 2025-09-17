@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="LinguaLearn.Mobile.Views.Auth.RegisterPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:material="clr-namespace:HorusStudio.Maui.MaterialDesignControls;assembly=HorusStudio.Maui.MaterialDesignControls"
+             xmlns:viewmodels="clr-namespace:LinguaLearn.Mobile.ViewModels.Auth"
+             x:DataType="viewmodels:SignupViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray900}}">
+
+    <ScrollView>
+        <Grid RowDefinitions="Auto,*,Auto" 
+              Padding="24,40,24,24">
+            
+            <!-- App Logo & Branding -->
+            <StackLayout Grid.Row="0" 
+                        Spacing="24"
+                        Margin="0,40,0,60">
+                
+                <!-- App Logo -->
+                <Border BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+                        StrokeShape="RoundRectangle 20"
+                        WidthRequest="80"
+                        HeightRequest="80"
+                        HorizontalOptions="Center">
+                    <Label Text="🌍"
+                           FontSize="40"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Border>
+                
+                <!-- App Name -->
+                <Label Text="LinguaLearn"
+                       FontSize="32"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
+                
+                <!-- Welcome Message -->
+                <Label Text="Create Account"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       Margin="0,20,0,0"
+                       TextColor="{AppThemeBinding Light={StaticResource Gray700}, Dark={StaticResource Gray300}}" />
+                
+                <Label Text="Start your language learning adventure today"
+                       FontSize="16"
+                       HorizontalOptions="Center"
+                       TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}" />
+                
+            </StackLayout>
+
+            <!-- Registration Form -->
+            <StackLayout Grid.Row="1" 
+                        Spacing="24">
+                
+                <!-- Display Name Field -->
+                <material:MaterialTextField x:Name="DisplayNameField"
+                                          Label="Full Name" Placeholder="Full Name"
+                                          Text="{Binding DisplayName}" Type="Outlined" TextColor="{StaticResource Primary}"
+                                          LeadingIcon="badge.png" HeightRequest="58" FontSize="25" PlaceholderSize="20"
+                                          AutomationProperties.Name="Full name input field" PlaceholderColor="{StaticResource Primary}"
+                                          ReturnType="Next" CornerRadius="8"
+                                          ReturnCommand="{Binding}" />
+                
+                <!-- Email Field -->
+                <material:MaterialTextField x:Name="EmailField" 
+                                          Label="Email" Placeholder="Email" FontSize="25"
+                                          Text="{Binding Email}" Type="Outlined" HeightRequest="58"
+                                          Keyboard="Email" TextColor="{StaticResource Primary}"
+                                          LeadingIcon="email.png" PlaceholderSize="20" PlaceholderColor="{StaticResource Primary}"
+                                          AutomationProperties.Name="Email input field"
+                                          ReturnType="Next" CornerRadius="8"
+                                          ReturnCommand="{Binding FocusPasswordCommand}" />
+                
+                <!-- Password Field -->
+                <material:MaterialTextField x:Name="PasswordField"
+                                          Label="Password" 
+                                          Text="{Binding Password}" CornerRadius="8"
+                                          IsPassword="True" PlaceholderSize="20"
+                                          LeadingIcon="lock.png" Type="Outlined" HeightRequest="58"
+                                          Placeholder="Minimum 6 characters"
+                                          AutomationProperties.Name="Password input field"
+                                          ReturnType="Next" FontSize="25" PlaceholderColor="{StaticResource Primary}"
+                                          ReturnCommand="{Binding FocusConfirmPasswordCommand}" />
+                
+                <!-- Confirm Password Field -->
+                <material:MaterialTextField x:Name="ConfirmPasswordField"
+                                          Label="Confirm Password" CornerRadius="8"
+                                          Text="{Binding ConfirmPassword}" Placeholder="Confirm Password" PlaceholderSize="20"
+                                          IsPassword="True" HeightRequest="58" Type="Outlined" FontSize="25"
+                                          LeadingIcon="lock.png" PlaceholderColor="{StaticResource Primary}"
+                                          AutomationProperties.Name="Confirm password input field"
+                                          ReturnType="Done"
+                                          ReturnCommand="{Binding SignUpCommand}" />
+                
+                <!-- Terms Agreement -->
+                <StackLayout Orientation="Horizontal" 
+                           Spacing="12"
+                           Margin="0,16,0,0">
+                    
+                    <material:MaterialCheckBox IsChecked="{Binding AgreeToTerms}"
+                                             Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+                                             AutomationProperties.Name="Terms and conditions agreement checkbox" />
+                    
+                    <Label VerticalOptions="Center"
+                          FontSize="14"
+                          TextColor="{AppThemeBinding Light={StaticResource Gray700}, Dark={StaticResource Gray300}}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="I agree to the " />
+                                <Span Text="Terms of Service" 
+                                      TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+                                      TextDecorations="Underline">
+                                    <Span.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ShowTermsCommand}" />
+                                    </Span.GestureRecognizers>
+                                </Span>
+                                <Span Text=" and " />
+                                <Span Text="Privacy Policy" 
+                                      TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+                                      TextDecorations="Underline">
+                                    <Span.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ShowPrivacyCommand}" />
+                                    </Span.GestureRecognizers>
+                                </Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    
+                </StackLayout>
+                
+            </StackLayout>
+
+            <!-- Action Buttons -->
+            <StackLayout Grid.Row="2" 
+                        Spacing="16"
+                        Margin="0,40,0,0">
+                
+                <!-- Sign Up Button -->
+                <material:MaterialButton Text="Create Account"
+                                       Command="{Binding SignUpCommand}"
+                                       Type="Outlined"
+                                       IsEnabled="{Binding CanSignUp}"
+                                       HeightRequest="56"
+                                       AutomationProperties.Name="Create account button">
+                    <material:MaterialButton.Triggers>
+                        <DataTrigger TargetType="material:MaterialButton" 
+                                   Binding="{Binding IsBusy}" 
+                                   Value="True">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </material:MaterialButton.Triggers>
+                </material:MaterialButton>
+                
+                <!-- Loading Indicator -->
+                <ActivityIndicator IsVisible="{Binding IsBusy}"
+                                                  IsRunning="{Binding IsBusy}"
+                                                  Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+                                                  HeightRequest="32"
+                                                  AutomationProperties.Name="Loading indicator" />
+                
+                <!-- Divider -->
+                <Grid Margin="0,24,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <BoxView Grid.Column="0" 
+                            HeightRequest="1" 
+                            BackgroundColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" 
+                            VerticalOptions="Center" />
+                    
+                    <Label Grid.Column="1" 
+                          Text="or" 
+                          Margin="16,0" 
+                          TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}"
+                          FontSize="14" />
+                    
+                    <BoxView Grid.Column="2" 
+                            HeightRequest="1" 
+                            BackgroundColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" 
+                            VerticalOptions="Center" />
+                </Grid>
+                
+                <!-- Login Navigation -->
+                <material:MaterialButton Text="Already have an account? Sign In"
+                                       Command="{Binding NavigateToLoginCommand}"
+                                       Type="Outlined"
+                                       HeightRequest="56"
+                                       AutomationProperties.Name="Sign in button" />
+                
+            </StackLayout>
+
+        </Grid>
+    </ScrollView>
+
+</ContentPage>

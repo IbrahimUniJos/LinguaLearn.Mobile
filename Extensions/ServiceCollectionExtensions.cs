@@ -1,9 +1,11 @@
+using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
-using Google.Cloud.Firestore.V1;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Refit;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using LinguaLearn.Mobile.Configuration;
 using LinguaLearn.Mobile.Services.Auth;
 using LinguaLearn.Mobile.Services.Data;
@@ -22,20 +24,54 @@ public static class ServiceCollectionExtensions
         // Register secure storage service
         services.AddSingleton<ISecureCredentialService, SecureCredentialService>();
 
-        // Register Firebase Auth API with Refit
+        // Configure JSON serialization options for Firebase API
+        var jsonSerializerOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            WriteIndented = false
+        };
+
+        // Get Firebase configuration
         var firebaseAuthConfig = configuration.GetSection("Firebase:Auth").Get<FirebaseAuthConfig>() ?? new FirebaseAuthConfig();
         
-        services.AddRefitClient<IFirebaseAuthApi>()
+        var refitSettings = new RefitSettings
+        {
+            ContentSerializer = new SystemTextJsonContentSerializer(jsonSerializerOptions)
+        };
+
+        // Register Firebase Auth API client for main auth operations
+        // Base URL: https://identitytoolkit.googleapis.com/v1
+        // This allows endpoints like /accounts:signInWithPassword?key={apiKey}
+        services.AddRefitClient<IFirebaseAuthApi>(refitSettings)
             .ConfigureHttpClient(client =>
             {
-                client.BaseAddress = new Uri(firebaseAuthConfig.BaseUrl);
+                client.BaseAddress = new Uri("https://identitytoolkit.googleapis.com/v1");
                 client.Timeout = TimeSpan.FromSeconds(firebaseAuthConfig.HttpTimeoutSeconds);
+                
+                // Add standard headers for Firebase API
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+                client.DefaultRequestHeaders.Add("User-Agent", "LinguaLearn-MAUI/1.0");
+            });
+
+        // Register Firebase Token API client for token refresh operations
+        // Base URL: https://securetoken.googleapis.com/v1
+        // This allows endpoint /token?key={apiKey}
+        services.AddRefitClient<IFirebaseTokenApi>(refitSettings)
+            .ConfigureHttpClient(client =>
+            {
+                client.BaseAddress = new Uri("https://securetoken.googleapis.com/v1");
+                client.Timeout = TimeSpan.FromSeconds(firebaseAuthConfig.HttpTimeoutSeconds);
+                
+                // Add standard headers for Firebase Token API
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+                client.DefaultRequestHeaders.Add("User-Agent", "LinguaLearn-MAUI/1.0");
             });
 
         // Register Firebase Auth Service
         services.AddScoped<IFirebaseAuthService, FirebaseAuthService>();
 
-        // Register Firestore
+        // Register FirestoreDb singleton using bundled service account credentials
         services.AddSingleton<FirestoreDb>(serviceProvider =>
         {
             var firestoreConfig = configuration.GetSection("Firebase:Firestore").Get<FirestoreConfig>() ?? new FirestoreConfig();
@@ -43,25 +79,15 @@ public static class ServiceCollectionExtensions
             
             try
             {
-                if (firestoreConfig.UseEmulator)
-                {
-                    Environment.SetEnvironmentVariable("FIRESTORE_EMULATOR_HOST", firestoreConfig.EmulatorHost);
-                    return FirestoreDb.Create(firestoreConfig.ProjectId);
-                }
-                
-                // Load credentials file from app package
-                string jsonCredentials;
+                // Load credentials from app package using GoogleCredential
                 using var stream = FileSystem.OpenAppPackageFileAsync(firestoreConfig.CredentialsFileName).GetAwaiter().GetResult();
-                using var reader = new StreamReader(stream);
-                jsonCredentials = reader.ReadToEnd();
-
-                var builder = new FirestoreDbBuilder
+                var credential = GoogleCredential.FromStream(stream);
+                
+                return new FirestoreDbBuilder
                 {
                     ProjectId = firestoreConfig.ProjectId,
-                    JsonCredentials = jsonCredentials
-                };
-
-                return builder.Build();
+                    Credential = credential
+                }.Build();
             }
             catch (Exception ex)
             {

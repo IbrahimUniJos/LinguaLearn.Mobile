@@ -77,6 +77,27 @@ public class ResetPasswordRequest
     public string NewPassword { get; set; } = string.Empty;
 }
 
+public class GetAccountInfoRequest
+{
+    [JsonPropertyName("idToken")]
+    public string IdToken { get; set; } = string.Empty;
+}
+
+public class SendEmailVerificationRequest
+{
+    [JsonPropertyName("requestType")]
+    public string RequestType { get; set; } = "VERIFY_EMAIL";
+    
+    [JsonPropertyName("idToken")]
+    public string IdToken { get; set; } = string.Empty;
+}
+
+public class ConfirmEmailVerificationRequest
+{
+    [JsonPropertyName("oobCode")]
+    public string OobCode { get; set; } = string.Empty;
+}
+
 public class SignUpResponse
 {
     [JsonPropertyName("kind")]
@@ -126,6 +147,9 @@ public class SignInResponse
     
     [JsonPropertyName("expiresIn")]
     public string ExpiresIn { get; set; } = string.Empty;
+    
+    [JsonPropertyName("emailVerified")]
+    public bool EmailVerified { get; set; }
 }
 
 public class RefreshTokenResponse
@@ -171,6 +195,9 @@ public class UpdateProfileResponse
     
     [JsonPropertyName("expiresIn")]
     public string ExpiresIn { get; set; } = string.Empty;
+    
+    [JsonPropertyName("emailVerified")]
+    public bool EmailVerified { get; set; }
 }
 
 public class DeleteAccountResponse
@@ -198,4 +225,64 @@ public class ResetPasswordResponse
     
     [JsonPropertyName("requestType")]
     public string RequestType { get; set; } = string.Empty;
+}
+
+public class GetAccountInfoResponse
+{
+    [JsonPropertyName("kind")]
+    public string Kind { get; set; } = string.Empty;
+    
+    [JsonPropertyName("users")]
+    public UserInfo[] Users { get; set; } = Array.Empty<UserInfo>();
+}
+
+public class UserInfo
+{
+    [JsonPropertyName("localId")]
+    public string LocalId { get; set; } = string.Empty;
+    
+    [JsonPropertyName("email")]
+    public string Email { get; set; } = string.Empty;
+    
+    [JsonPropertyName("displayName")]
+    public string? DisplayName { get; set; }
+    
+    [JsonPropertyName("photoUrl")]
+    public string? PhotoUrl { get; set; }
+    
+    [JsonPropertyName("emailVerified")]
+    public bool EmailVerified { get; set; }
+    
+    [JsonPropertyName("disabled")]
+    public bool Disabled { get; set; }
+    
+    [JsonPropertyName("createdAt")]
+    public string CreatedAt { get; set; } = string.Empty;
+    
+    [JsonPropertyName("lastLoginAt")]
+    public string LastLoginAt { get; set; } = string.Empty;
+    
+    [JsonPropertyName("providerUserInfo")]
+    public ProviderUserInfo[]? ProviderUserInfo { get; set; }
+}
+
+public class ProviderUserInfo
+{
+    [JsonPropertyName("providerId")]
+    public string ProviderId { get; set; } = string.Empty;
+    
+    [JsonPropertyName("displayName")]
+    public string? DisplayName { get; set; }
+    
+    [JsonPropertyName("photoUrl")]
+    public string? PhotoUrl { get; set; }
+    
+    [JsonPropertyName("federatedId")]
+    public string FederatedId { get; set; } = string.Empty;
+    
+    [JsonPropertyName("email")]
+    public string Email { get; set; } = string.Empty;
+    
+    [JsonPropertyName("rawId")]
+    public string RawId { get; set; } = string.Empty;
 }

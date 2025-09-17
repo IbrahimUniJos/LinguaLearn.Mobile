@@ -5,7 +5,8 @@
         public AppShell()
         {
             InitializeComponent();
-          
+            Routing.RegisterRoute("/main", typeof(MainPage));
+
         }
     }
 }

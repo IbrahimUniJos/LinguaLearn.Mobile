@@ -9,6 +9,7 @@ namespace LinguaLearn.Mobile.Services.Auth;
 public class FirebaseAuthService : IFirebaseAuthService
 {
     private readonly IFirebaseAuthApi _authApi;
+    private readonly IFirebaseTokenApi _tokenApi;
     private readonly ISecureCredentialService _credentialService;
     private readonly ILogger<FirebaseAuthService> _logger;
     private UserSession? _currentSession;
@@ -16,12 +17,13 @@ public class FirebaseAuthService : IFirebaseAuthService
     public bool IsAuthenticated => _currentSession?.IsAuthenticated ?? false;
     public event EventHandler<UserSession?>? AuthStateChanged;
 
-    public FirebaseAuthService(
-        IFirebaseAuthApi authApi,
-        ISecureCredentialService credentialService,
-        ILogger<FirebaseAuthService> logger)
+    public FirebaseAuthService(IFirebaseAuthApi authApi,
+                               IFirebaseTokenApi tokenApi,
+                               ISecureCredentialService credentialService,
+                               ILogger<FirebaseAuthService> logger)
     {
         _authApi = authApi;
+        _tokenApi = tokenApi;
         _credentialService = credentialService;
         _logger = logger;
     }
@@ -34,12 +36,6 @@ public class FirebaseAuthService : IFirebaseAuthService
     {
         try
         {
-            var apiKey = await _credentialService.GetFirebaseApiKeyAsync();
-            if (string.IsNullOrEmpty(apiKey))
-            {
-                return ServiceResult<UserSession>.Failure("Firebase API key not configured");
-            }
-
             var request = new SignUpRequest
             {
                 Email = email,
@@ -47,7 +43,7 @@ public class FirebaseAuthService : IFirebaseAuthService
                 DisplayName = displayName
             };
 
-            var response = await _authApi.SignUpAsync(request, apiKey);
+            var response = await _authApi.SignUpAsync(request, ct);
             var session = MapToUserSession(response);
             
             await SaveSessionAsync(session);
@@ -74,19 +70,13 @@ public class FirebaseAuthService : IFirebaseAuthService
     {
         try
         {
-            var apiKey = await _credentialService.GetFirebaseApiKeyAsync();
-            if (string.IsNullOrEmpty(apiKey))
-            {
-                return ServiceResult<UserSession>.Failure("Firebase API key not configured");
-            }
-
             var request = new SignInRequest
             {
                 Email = email,
                 Password = password
             };
 
-            var response = await _authApi.SignInAsync(request, apiKey);
+            var response = await _authApi.SignInAsync(request, ct);
             var session = MapToUserSession(response);
             
             await SaveSessionAsync(session);
@@ -110,12 +100,11 @@ public class FirebaseAuthService : IFirebaseAuthService
     {
         try
         {
-            var apiKey = await _credentialService.GetFirebaseApiKeyAsync();
             var refreshToken = await _credentialService.GetRefreshTokenAsync();
             
-            if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(refreshToken))
+            if (string.IsNullOrEmpty(refreshToken))
             {
-                return ServiceResult<UserSession>.Failure("Missing credentials for token refresh");
+                return ServiceResult<UserSession>.Failure("Missing refresh token");
             }
 
             var request = new RefreshTokenRequest
@@ -123,7 +112,7 @@ public class FirebaseAuthService : IFirebaseAuthService
                 RefreshToken = refreshToken
             };
 
-            var response = await _authApi.RefreshTokenAsync(request, apiKey);
+            var response = await _tokenApi.RefreshTokenAsync(request, ct);
             var session = MapToUserSession(response, _currentSession);
             
             await SaveSessionAsync(session);
@@ -151,10 +140,9 @@ public class FirebaseAuthService : IFirebaseAuthService
     {
         try
         {
-            var apiKey = await _credentialService.GetFirebaseApiKeyAsync();
             var idToken = await _credentialService.GetIdTokenAsync();
             
-            if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(idToken))
+            if (string.IsNullOrEmpty(idToken))
             {
                 return ServiceResult<UserSession>.Failure("User not authenticated");
             }
@@ -166,7 +154,7 @@ public class FirebaseAuthService : IFirebaseAuthService
                 PhotoUrl = photoUrl
             };
 
-            var response = await _authApi.UpdateProfileAsync(request, apiKey);
+            var response = await _authApi.UpdateProfileAsync(request, ct);
             var session = MapToUserSession(response, _currentSession);
             
             await SaveSessionAsync(session);
@@ -190,18 +178,12 @@ public class FirebaseAuthService : IFirebaseAuthService
     {
         try
         {
-            var apiKey = await _credentialService.GetFirebaseApiKeyAsync();
-            if (string.IsNullOrEmpty(apiKey))
-            {
-                return ServiceResult<bool>.Failure("Firebase API key not configured");
-            }
-
             var request = new SendOobCodeRequest
             {
                 Email = email
             };
 
-            await _authApi.SendPasswordResetAsync(request, apiKey);
+            await _authApi.SendPasswordResetAsync(request, ct);
             return ServiceResult<bool>.Success(true);
         }
         catch (ApiException ex)
@@ -220,10 +202,9 @@ public class FirebaseAuthService : IFirebaseAuthService
     {
         try
         {
-            var apiKey = await _credentialService.GetFirebaseApiKeyAsync();
             var idToken = await _credentialService.GetIdTokenAsync();
             
-            if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(idToken))
+            if (string.IsNullOrEmpty(idToken))
             {
                 return ServiceResult<bool>.Failure("User not authenticated");
             }
@@ -233,7 +214,7 @@ public class FirebaseAuthService : IFirebaseAuthService
                 IdToken = idToken
             };
 
-            await _authApi.DeleteAccountAsync(request, apiKey);
+            await _authApi.DeleteAccountAsync(request, ct);
             await SignOutAsync();
             
             return ServiceResult<bool>.Success(true);

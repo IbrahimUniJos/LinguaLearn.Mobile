@@ -6,8 +6,7 @@ LinguaLearn is a cross?platform language learning application delivering gamifie
 ## 2. Target Platforms
 - Android
 - iOS
-- Windows (desktop companion)
-- macOS (Mac Catalyst)
+
 
 ## 3. Core Value Proposition
 - Gamified progression (XP, streaks, levels, badges)
@@ -18,7 +17,7 @@ LinguaLearn is a cross?platform language learning application delivering gamifie
 ## 4. Technology Stack
 ### Application Layer
 - Framework: .NET 9 + .NET MAUI (Multi-platform App UI)
-- Language: C# 12
+- Language: C# 12+
 - UI Paradigm: MVVM (CommunityToolkit.Mvvm)
 - Navigation: .NET MAUI Shell (hierarchical + modal + deep links)
 - Dependency Injection: Built-in `MauiProgram` + `Microsoft.Extensions.DependencyInjection`

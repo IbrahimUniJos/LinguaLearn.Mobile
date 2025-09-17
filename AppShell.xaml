@@ -3,10 +3,18 @@
        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:LinguaLearn.Mobile"
-       Title="LinguaLearn">
+       xmlns:auth="clr-namespace:LinguaLearn.Mobile.Views.Auth"
+       Title="LinguaLearn"
+       FlyoutBehavior="Disabled">
 
     <!--  Authentication Flow (No Auth Required)  -->
-    <ShellContent Title="Login" ContentTemplate="{DataTemplate local:MainPage}" Route="login" />
+    <ShellContent Title="Login" 
+                  ContentTemplate="{DataTemplate auth:LoginPage}" 
+                  Route="login" />
+
+    <ShellContent Title="Register" 
+                  ContentTemplate="{DataTemplate auth:RegisterPage}" 
+                  Route="register" />
 
     <!--  Main App Navigation (Auth Required)  -->
     <TabBar Route="main">
