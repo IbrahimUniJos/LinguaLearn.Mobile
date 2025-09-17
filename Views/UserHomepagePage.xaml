@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="LinguaLearn.Mobile.Views.UserHomepagePage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:material="clr-namespace:HorusStudio.Maui.MaterialDesignControls;assembly=HorusStudio.Maui.MaterialDesignControls"
+             xmlns:viewmodels="clr-namespace:LinguaLearn.Mobile.ViewModels"
+             xmlns:models="clr-namespace:LinguaLearn.Mobile.Models"
+             xmlns:components="clr-namespace:LinguaLearn.Mobile.Components"
+             xmlns:converters="clr-namespace:LinguaLearn.Mobile.Converters"
+             x:DataType="viewmodels:UserHomepageViewModel"
+             Title="Home"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:FirstCharConverter x:Key="FirstCharConverter" />
+            
+            <Style x:Key="HeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="OpenSansSemibold" />
+                <Setter Property="FontSize" Value="24" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource OnBackgroundLight}, Dark={StaticResource OnBackgroundDark}}" />
+            </Style>
+            
+            <Style x:Key="SubHeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}" />
+            </Style>
+            
+            <Style x:Key="BodyLabelStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <RefreshView IsRefreshing="{Binding IsLoading}"
+                 Command="{Binding RefreshDataCommand}">
+        <ScrollView>
+            <StackLayout Spacing="20" Padding="20">
+                
+                <!-- Error Message -->
+                <Label Text="{Binding ErrorMessage}"
+                       IsVisible="{Binding ErrorMessage, Converter={StaticResource StringIsNotNullOrEmptyConverter}}"
+                       TextColor="{StaticResource Error}"
+                       FontFamily="OpenSansRegular"
+                       FontSize="16"
+                       HorizontalOptions="Center" />
+                
+                <!-- User Profile Header -->
+                <components:UserProfileHeaderView BindingContext="{Binding UserProfile}"
+                                                   IsVisible="{Binding UserProfile, Converter={StaticResource IsNotNullConverter}}" />
+                
+                <!-- Weekly Goal Progress -->
+                <components:WeeklyProgressView BindingContext="{Binding UserStats.CurrentWeek}"
+                                               IsVisible="{Binding UserStats.CurrentWeek, Converter={StaticResource IsNotNullConverter}}" />
+                
+                <!-- Quick Actions -->
+                <StackLayout Spacing="15">
+                    <Label Text="Quick Actions"
+                           Style="{StaticResource HeaderLabelStyle}" />
+                    
+                    <Grid ColumnDefinitions="*,*" 
+                          RowDefinitions="Auto,Auto"
+                          ColumnSpacing="15"
+                          RowSpacing="15">
+                        
+                        <components:QuickActionCard Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Title="Continue Learning"
+                                                    Icon="📚"
+                                                    CardBackgroundColor="{StaticResource Primary}"
+                                                    TextColor="{StaticResource OnPrimary}"
+                                                    Command="{Binding NavigateToLessonsCommand}" />
+                        
+                        <components:QuickActionCard Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    Title="Daily Challenge"
+                                                    Icon="🏆"
+                                                    CardBackgroundColor="{StaticResource Secondary}"
+                                                    TextColor="{StaticResource OnSecondary}"
+                                                    Command="{Binding NavigateToDailyChallengeCommand}" />
+                        
+                        <components:QuickActionCard Grid.Row="1"
+                                                    Grid.Column="0"
+                                                    Title="Practice Pronunciation"
+                                                    Icon="🎤"
+                                                    CardBackgroundColor="{StaticResource Tertiary}"
+                                                    TextColor="{StaticResource OnTertiary}"
+                                                    Command="{Binding NavigateToPronunciationCommand}" />
+                        
+                        <components:QuickActionCard Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Title="Review Vocabulary"
+                                                    Icon="📖"
+                                                    CardBackgroundColor="{StaticResource Primary}"
+                                                    TextColor="{StaticResource OnPrimary}"
+                                                    Command="{Binding NavigateToVocabularyCommand}" />
+                    </Grid>
+                </StackLayout>
+                
+                <!-- Recent Activity -->
+                <StackLayout Spacing="15"
+                             IsVisible="{Binding RecentActivities.Count, Converter={StaticResource IntToBoolConverter}}">
+                    <StackLayout Orientation="Horizontal"
+                                 HorizontalOptions="Fill">
+                        <Label Text="Recent Activity"
+                               Style="{StaticResource HeaderLabelStyle}"
+                               HorizontalOptions="Start" />
+                        <Button Text=">"
+                                HorizontalOptions="End"
+                                BackgroundColor="Transparent"
+                                TextColor="{StaticResource Primary}"
+                                Command="{Binding NavigateToProfileCommand}" />
+                    </StackLayout>
+                    
+                    <CollectionView ItemsSource="{Binding RecentActivities}"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:ActivityItem">
+                                <material:MaterialCard CornerRadius="15"
+                                                       Padding="15"
+                                                       Margin="0,0,0,10"
+                                                       BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+                                    <Grid ColumnDefinitions="Auto,*" 
+                                          ColumnSpacing="15">
+                                        <Label Grid.Column="0"
+                                               Text="{Binding Icon}"
+                                               FontSize="24"
+                                               VerticalOptions="Start" />
+                                        <StackLayout Grid.Column="1"
+                                                     Spacing="5">
+                                            <Label Text="{Binding Title}"
+                                                   Style="{StaticResource SubHeaderLabelStyle}" />
+                                            <Label Text="{Binding Description}"
+                                                   Style="{StaticResource BodyLabelStyle}"
+                                                   FontSize="14" />
+                                            <Label Text="{Binding Timestamp, StringFormat='{0:MMM dd, yyyy HH:mm}'}"
+                                                   Style="{StaticResource BodyLabelStyle}"
+                                                   FontSize="12"
+                                                   TextColor="{StaticResource Outline}" />
+                                        </StackLayout>
+                                    </Grid>
+                                </material:MaterialCard>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+                
+                <!-- Leaderboard Preview -->
+                <material:MaterialCard CornerRadius="20" 
+                                       Padding="20"
+                                       BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+                    <StackLayout Spacing="15">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Leaderboard"
+                                   Style="{StaticResource HeaderLabelStyle}"
+                                   HorizontalOptions="Start" />
+                            <Button Text=">"
+                                    HorizontalOptions="End"
+                                    BackgroundColor="Transparent"
+                                    TextColor="{StaticResource Primary}"
+                                    Command="{Binding NavigateToLeaderboardCommand}" />
+                        </StackLayout>
+                        
+                        <StackLayout Orientation="Horizontal"
+                                     Spacing="10">
+                            <Label Text="Your rank:"
+                                   Style="{StaticResource BodyLabelStyle}" />
+                            <Label Text="{Binding UserRank, StringFormat='#{0}'}"
+                                   Style="{StaticResource BodyLabelStyle}"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Primary}" />
+                        </StackLayout>
+                        
+                        <ProgressBar Progress="{Binding RankProgress}"
+                                     ProgressColor="{StaticResource Primary}"
+                                     BackgroundColor="{StaticResource SurfaceVariant}"
+                                     HeightRequest="10" />
+                    </StackLayout>
+                </material:MaterialCard>
+                
+                <!-- Loading Indicator -->
+                <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                   IsVisible="{Binding IsLoading}"
+                                   Color="{StaticResource Primary}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+            </StackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

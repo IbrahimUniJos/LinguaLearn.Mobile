@@ -12,6 +12,9 @@
             </ResourceDictionary.MergedDictionaries>
             
             <converters:StringIsNotNullOrEmptyConverter x:Key="StringIsNotNullOrEmptyConverter" />
+            <converters:FirstCharConverter x:Key="FirstCharConverter" />
+            <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
+            <converters:IntToBoolConverter x:Key="IntToBoolConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

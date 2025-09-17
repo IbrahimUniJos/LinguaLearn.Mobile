@@ -5,6 +5,7 @@
        xmlns:local="clr-namespace:LinguaLearn.Mobile"
        xmlns:auth="clr-namespace:LinguaLearn.Mobile.Views.Auth"
        xmlns:onboarding="clr-namespace:LinguaLearn.Mobile.Views.Onboarding"
+       xmlns:views="clr-namespace:LinguaLearn.Mobile.Views"
        Title="LinguaLearn"
        FlyoutBehavior="Disabled">
 
@@ -24,7 +25,7 @@
     <!--  Main App Navigation (Auth Required)  -->
     <TabBar Route="main">
         <Tab Title="Home" Icon="home.png">
-            <ShellContent Title="Home" ContentTemplate="{DataTemplate local:MainPage}" Route="home" />
+            <ShellContent Title="Home" ContentTemplate="{DataTemplate views:UserHomepagePage}" Route="home" />
         </Tab>
 
         <Tab Title="Lessons" Icon="lessons.png">

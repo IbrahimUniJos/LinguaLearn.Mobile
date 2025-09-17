@@ -8,6 +8,9 @@ using HorusStudio.Maui.MaterialDesignControls;
 using LinguaLearn.Mobile.ViewModels;
 using LinguaLearn.Mobile.Views.Auth;
 using LinguaLearn.Mobile.Views.Onboarding;
+using LinguaLearn.Mobile.Views;
+using LinguaLearn.Mobile.Services.Activity;
+using LinguaLearn.Mobile.Services.Data;
 using CommunityToolkit.Maui;
 using LinguaLearn.Mobile.ViewModels.Auth;
 
@@ -47,16 +50,20 @@ namespace LinguaLearn.Mobile
             // Add services
             builder.Services.AddSecureStorage();
             builder.Services.AddFirebaseServices(builder.Configuration);
+            builder.Services.AddTransient<IActivityService, ActivityService>();
+            builder.Services.AddTransient<TestDataSeeder>();
 
             // Add ViewModels
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<SignupViewModel>();
             builder.Services.AddTransient<OnboardingViewModel>();
+            builder.Services.AddTransient<UserHomepageViewModel>();
 
             // Add Views
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<RegisterPage>();
             builder.Services.AddTransient<OnboardingPage>();
+            builder.Services.AddTransient<Views.UserHomepagePage>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

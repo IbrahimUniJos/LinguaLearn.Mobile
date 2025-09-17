@@ -97,7 +97,7 @@ public partial class LoginViewModel : ObservableValidator
             {
                 _logger.LogInformation("Login successful for user: {Email}", Email);
                 Password = string.Empty; // clear sensitive data
-                await Shell.Current.GoToAsync("//main");
+                await Shell.Current.GoToAsync("//home");
             }
             else
             {
