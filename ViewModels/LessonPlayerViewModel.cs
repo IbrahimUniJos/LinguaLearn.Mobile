@@ -10,7 +10,7 @@ using LinguaLearn.Mobile.Services.Activity;
 
 namespace LinguaLearn.Mobile.ViewModels;
 
-public partial class LessonPlayerViewModel : ObservableObject
+public partial class LessonPlayerViewModel : ObservableObject, IQueryAttributable
 {
     private readonly ILessonService _lessonService;
     private readonly IUserService _userService;
@@ -62,23 +62,34 @@ public partial class LessonPlayerViewModel : ObservableObject
     [ObservableProperty]
     private bool _canNavigatePrevious;
 
-    public ObservableCollection<LessonSection> Sections { get; } = new();
+    public ObservableCollection<LessonSection> Sections { get; } = [];
 
     private readonly IProgressService _progressService;
     private readonly IAudioService _audioService;
 
-    public LessonPlayerViewModel(
-        ILessonService lessonService,
-        IUserService userService,
-        IActivityService activityService,
-        IProgressService progressService,
-        IAudioService audioService)
+    public LessonPlayerViewModel(ILessonService lessonService,
+                                 IUserService userService,
+                                 IActivityService activityService,
+                                 IProgressService progressService,
+                                 IAudioService audioService)
     {
         _lessonService = lessonService;
         _userService = userService;
         _activityService = activityService;
         _progressService = progressService;
         _audioService = audioService;
+    }
+
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        if (query.ContainsKey("lessonId"))
+        {
+            var lessonId = query["lessonId"].ToString();
+            if (!string.IsNullOrEmpty(lessonId))
+            {
+                _ = Task.Run(async () => await InitializeAsync(lessonId));
+            }
+        }
     }
 
     public async Task InitializeAsync(string lessonId)

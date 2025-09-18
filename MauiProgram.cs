@@ -64,6 +64,8 @@ namespace LinguaLearn.Mobile
             builder.Services.AddTransient<UserHomepageViewModel>();
             builder.Services.AddTransient<LessonsViewModel>();
             builder.Services.AddTransient<LessonPlayerViewModel>();
+            builder.Services.AddTransient<LessonDetailsViewModel>();
+            builder.Services.AddTransient<LessonCompleteViewModel>();
             builder.Services.AddTransient<QuizViewModel>();
 
             // Add Views
@@ -73,6 +75,7 @@ namespace LinguaLearn.Mobile
             builder.Services.AddTransient<Views.UserHomepagePage>();
             builder.Services.AddTransient<Views.LessonsPage>();
             builder.Services.AddTransient<Views.LessonPlayerPage>();
+            builder.Services.AddTransient<Views.LessonDetailsPage>();
             builder.Services.AddTransient<Views.LessonCompletePage>();
             builder.Services.AddTransient<Views.QuizPage>();
 

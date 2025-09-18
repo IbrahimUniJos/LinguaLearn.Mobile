@@ -8,7 +8,7 @@
              xmlns:components="clr-namespace:LinguaLearn.Mobile.Components"
              xmlns:converters="clr-namespace:LinguaLearn.Mobile.Converters"
              x:DataType="viewmodels:UserHomepageViewModel"
-             Title="Home"
+             Title="Home" Shell.NavBarIsVisible="False"
              BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
 
     <ContentPage.Resources>

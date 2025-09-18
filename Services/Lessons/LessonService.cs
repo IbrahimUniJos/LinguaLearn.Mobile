@@ -484,20 +484,220 @@ public class LessonService : ILessonService
 
     public async IAsyncEnumerable<Lesson> ListenToLessonsAsync([EnumeratorCancellation] CancellationToken ct = default)
     {
-        // This would be implemented with Firestore real-time listeners
-        // For now, return empty enumerable as placeholder
-        yield break;
+        try
+        {
+            // Get initial lessons
+            var initialResult = await GetLessonsAsync(ct);
+            if (initialResult.IsSuccess && initialResult.Data != null)
+            {
+                foreach (var lesson in initialResult.Data)
+                {
+                    yield return lesson;
+                }
+            }
+
+            // TODO: Implement real-time Firestore listener when available
+            // For now, we just return the initial set
+        }
+        finally
+        {
+            // Cleanup if needed
+        }
     }
 
     public async Task<IDisposable> ListenToUserProgressAsync(string userId, string lessonId, Action<UserProgress?> onProgressUpdate, CancellationToken ct = default)
     {
-        // This would be implemented with Firestore real-time listeners
-        // For now, return empty disposable as placeholder
-        return new EmptyDisposable();
+        try
+        {
+            // Get initial progress
+            var initialProgress = await GetUserProgressAsync(userId, lessonId, ct);
+            if (initialProgress.IsSuccess)
+            {
+                onProgressUpdate?.Invoke(initialProgress.Data);
+            }
+
+            // TODO: Implement real-time Firestore listener when available
+            // For now, we just return the initial progress and a dummy disposable
+            return new ProgressListener(onProgressUpdate);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error setting up progress listener for user {UserId}, lesson {LessonId}", userId, lessonId);
+            return new EmptyDisposable();
+        }
     }
 
     private class EmptyDisposable : IDisposable
     {
         public void Dispose() { }
+    }
+
+    private class ProgressListener : IDisposable
+    {
+        private readonly Action<UserProgress?> _onProgressUpdate;
+        private bool _disposed = false;
+
+        public ProgressListener(Action<UserProgress?> onProgressUpdate)
+        {
+            _onProgressUpdate = onProgressUpdate;
+        }
+
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                _disposed = true;
+                // TODO: Cleanup real-time listener when implemented
+            }
+        }
+    }
+
+    public async Task<ServiceResult<bool>> ResetLessonProgressAsync(string userId, string lessonId, CancellationToken ct = default)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(lessonId))
+                return ServiceResult<bool>.Failure("User ID and Lesson ID are required");
+
+            // Delete existing progress
+            var result = await _firestoreRepository.DeleteDocumentAsync($"users/{userId}/progress", lessonId, ct);
+            
+            if (result.IsSuccess)
+            {
+                _logger.LogInformation("Reset progress for user {UserId} on lesson {LessonId}", userId, lessonId);
+            }
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error resetting lesson progress for user {UserId}, lesson {LessonId}", userId, lessonId);
+            return ServiceResult<bool>.Failure($"Error resetting lesson progress: {ex.Message}");
+        }
+    }
+
+    public async Task<ServiceResult<List<Lesson>>> SearchLessonsAsync(string searchTerm, CancellationToken ct = default)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return ServiceResult<List<Lesson>>.Success(new List<Lesson>());
+
+            var allLessonsResult = await GetLessonsAsync(ct);
+            if (!allLessonsResult.IsSuccess || allLessonsResult.Data == null)
+            {
+                return ServiceResult<List<Lesson>>.Failure(allLessonsResult.ErrorMessage ?? "Failed to get lessons");
+            }
+
+            var searchTermLower = searchTerm.ToLower();
+            var filteredLessons = allLessonsResult.Data
+                .Where(l => 
+                    l.Title.ToLower().Contains(searchTermLower) ||
+                    l.Description.ToLower().Contains(searchTermLower) ||
+                    l.Language.ToLower().Contains(searchTermLower) ||
+                    l.Difficulty.ToLower().Contains(searchTermLower))
+                .ToList();
+
+            return ServiceResult<List<Lesson>>.Success(filteredLessons);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching lessons with term {SearchTerm}", searchTerm);
+            return ServiceResult<List<Lesson>>.Failure($"Error searching lessons: {ex.Message}");
+        }
+    }
+
+    public async Task<ServiceResult<bool>> BookmarkLessonAsync(string userId, string lessonId, CancellationToken ct = default)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(lessonId))
+                return ServiceResult<bool>.Failure("User ID and Lesson ID are required");
+
+            var bookmark = new
+            {
+                userId = userId,
+                lessonId = lessonId,
+                bookmarkedAt = DateTime.UtcNow
+            };
+
+            var result = await _firestoreRepository.SetDocumentAsync(
+                $"users/{userId}/bookmarks", 
+                lessonId, 
+                bookmark, 
+                ct);
+
+            if (result.IsSuccess)
+            {
+                _logger.LogInformation("User {UserId} bookmarked lesson {LessonId}", userId, lessonId);
+            }
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error bookmarking lesson {LessonId} for user {UserId}", lessonId, userId);
+            return ServiceResult<bool>.Failure($"Error bookmarking lesson: {ex.Message}");
+        }
+    }
+
+    public async Task<ServiceResult<bool>> UnbookmarkLessonAsync(string userId, string lessonId, CancellationToken ct = default)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(lessonId))
+                return ServiceResult<bool>.Failure("User ID and Lesson ID are required");
+
+            var result = await _firestoreRepository.DeleteDocumentAsync($"users/{userId}/bookmarks", lessonId, ct);
+            
+            if (result.IsSuccess)
+            {
+                _logger.LogInformation("User {UserId} unbookmarked lesson {LessonId}", userId, lessonId);
+            }
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error unbookmarking lesson {LessonId} for user {UserId}", lessonId, userId);
+            return ServiceResult<bool>.Failure($"Error unbookmarking lesson: {ex.Message}");
+        }
+    }
+
+    public async Task<ServiceResult<List<Lesson>>> GetBookmarkedLessonsAsync(string userId, CancellationToken ct = default)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(userId))
+                return ServiceResult<List<Lesson>>.Failure("User ID is required");
+
+            var bookmarksResult = await _firestoreRepository.GetCollectionAsync<dynamic>($"users/{userId}/bookmarks", ct);
+            if (!bookmarksResult.IsSuccess || bookmarksResult.Data == null)
+            {
+                return ServiceResult<List<Lesson>>.Success(new List<Lesson>());
+            }
+
+            var lessons = new List<Lesson>();
+            foreach (var bookmark in bookmarksResult.Data)
+            {
+                if (bookmark is IDictionary<string, object> bookmarkDict && 
+                    bookmarkDict.TryGetValue("lessonId", out var lessonIdObj) &&
+                    lessonIdObj is string lessonId)
+                {
+                    var lessonResult = await GetLessonAsync(lessonId, ct);
+                    if (lessonResult.IsSuccess && lessonResult.Data != null)
+                    {
+                        lessons.Add(lessonResult.Data);
+                    }
+                }
+            }
+
+            return ServiceResult<List<Lesson>>.Success(lessons);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting bookmarked lessons for user {UserId}", userId);
+            return ServiceResult<List<Lesson>>.Failure($"Error getting bookmarked lessons: {ex.Message}");
+        }
     }
 }

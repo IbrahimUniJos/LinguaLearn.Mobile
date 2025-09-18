@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="LinguaLearn.Mobile.Views.LessonDetailsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:material="clr-namespace:HorusStudio.Maui.MaterialDesignControls;assembly=HorusStudio.Maui.MaterialDesignControls"
+             xmlns:viewmodels="clr-namespace:LinguaLearn.Mobile.ViewModels"
+             xmlns:models="clr-namespace:LinguaLearn.Mobile.Models"
+             x:DataType="viewmodels:LessonDetailsViewModel"
+             Title="{Binding Lesson.Title}"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
+
+    <ScrollView>
+        <StackLayout Spacing="20" Padding="20">
+            
+            <!-- Error Message -->
+            <Label Text="{Binding ErrorMessage}"
+                   IsVisible="{Binding ErrorMessage, Converter={StaticResource StringIsNotNullOrEmptyConverter}}"
+                   TextColor="{StaticResource Error}"
+                   FontFamily="OpenSansRegular"
+                   FontSize="16"
+                   HorizontalOptions="Center"
+                   Padding="10"
+                   BackgroundColor="{StaticResource ErrorContainer}" />
+            
+            <!-- Loading Indicator -->
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                             IsVisible="{Binding IsLoading}"
+                             Color="{StaticResource Primary}"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center" />
+            
+            <!-- Lesson Content -->
+            <StackLayout IsVisible="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
+                        Spacing="20">
+                
+                <!-- Lesson Header -->
+                <material:MaterialCard CornerRadius="15"
+                                       Padding="20"
+                                       BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+                    <StackLayout Spacing="15">
+                        <Label Text="{Binding Lesson.Title}"
+                               FontFamily="OpenSansSemibold"
+                               FontSize="24"
+                               TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}" />
+                        
+                        <Label Text="{Binding Lesson.Description}"
+                               FontFamily="OpenSansRegular"
+                               FontSize="16"
+                               TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}" />
+                        
+                        <!-- Metadata -->
+                        <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto" ColumnSpacing="15" RowSpacing="10">
+                            <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Spacing="5">
+                                <Label Text="{Binding Lesson.Difficulty, Converter={StaticResource DifficultyIconConverter}}"
+                                       FontSize="16" />
+                                <Label Text="{Binding Lesson.Difficulty}"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="14"
+                                       TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}"
+                                       VerticalOptions="Center" />
+                            </StackLayout>
+                            
+                            <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Spacing="5">
+                                <Label Text="⏱️" FontSize="16" />
+                                <Label Text="{Binding Lesson.EstimatedDurationMinutes, Converter={StaticResource EstimatedTimeConverter}}"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="14"
+                                       TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}"
+                                       VerticalOptions="Center" />
+                            </StackLayout>
+                            
+                            <StackLayout Grid.Row="0" Grid.Column="2" Orientation="Horizontal" Spacing="5">
+                                <Label Text="🏆" FontSize="16" />
+                                <Label Text="{Binding Lesson.XPReward, StringFormat='{0} XP'}"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="14"
+                                       TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}"
+                                       VerticalOptions="Center" />
+                            </StackLayout>
+                            
+                            <StackLayout Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Spacing="5">
+                                <Label Text="📚" FontSize="16" />
+                                <Label Text="{Binding Sections.Count, StringFormat='{0} sections'}"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="14"
+                                       TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}"
+                                       VerticalOptions="Center" />
+                            </StackLayout>
+                            
+                            <StackLayout Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Spacing="5">
+                                <Label Text="🌍" FontSize="16" />
+                                <Label Text="{Binding Lesson.Language}"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="14"
+                                       TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}"
+                                       VerticalOptions="Center" />
+                            </StackLayout>
+                        </Grid>
+                        
+                        <!-- Progress Bar (if started) -->
+                        <StackLayout IsVisible="{Binding UserProgress, Converter={StaticResource IsNotNullConverter}}"
+                                   Spacing="5">
+                            <Label Text="Progress"
+                                   FontFamily="OpenSansSemibold"
+                                   FontSize="14"
+                                   TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}" />
+                            <ProgressBar Progress="{Binding UserProgress.CompletedSections.Count, Converter={StaticResource ProgressConverter}}"
+                                       ProgressColor="{StaticResource Primary}"
+                                       BackgroundColor="{StaticResource SurfaceVariant}" />
+                            <Label Text="{Binding UserProgress.CompletedSections.Count, StringFormat='{0} of {1} sections completed'}"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="12"
+                                   TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}" />
+                        </StackLayout>
+                    </StackLayout>
+                </material:MaterialCard>
+                
+                <!-- Prerequisites -->
+                <material:MaterialCard CornerRadius="15"
+                                       Padding="20"
+                                       BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                                       IsVisible="{Binding Prerequisites.Count, Converter={StaticResource IntToBoolConverter}}">
+                    <StackLayout Spacing="10">
+                        <Label Text="Prerequisites"
+                               FontFamily="OpenSansSemibold"
+                               FontSize="18"
+                               TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}" />
+                        
+                        <CollectionView ItemsSource="{Binding Prerequisites}"
+                                        SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <StackLayout Orientation="Horizontal" Spacing="10" Padding="5">
+                                        <Label Text="✓"
+                                               FontSize="16"
+                                               TextColor="{StaticResource Primary}"
+                                               VerticalOptions="Center" />
+                                        <Label Text="{Binding .}"
+                                               FontFamily="OpenSansRegular"
+                                               FontSize="14"
+                                               TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}"
+                                               VerticalOptions="Center" />
+                                    </StackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                </material:MaterialCard>
+                
+                <!-- Lesson Sections -->
+                <material:MaterialCard CornerRadius="15"
+                                       Padding="20"
+                                       BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+                    <StackLayout Spacing="15">
+                        <Label Text="Lesson Content"
+                               FontFamily="OpenSansSemibold"
+                               FontSize="18"
+                               TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}" />
+                        
+                        <CollectionView ItemsSource="{Binding Sections}"
+                                        SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:LessonSection">
+                                    <material:MaterialCard CornerRadius="10"
+                                                           Padding="15"
+                                                           Margin="0,0,0,10"
+                                                           BackgroundColor="{StaticResource SurfaceVariant}">
+                                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
+                                            <Label Grid.Column="0"
+                                                   Text="{Binding Type, Converter={StaticResource SectionTypeIconConverter}}"
+                                                   FontSize="20"
+                                                   VerticalOptions="Center" />
+                                            
+                                            <StackLayout Grid.Column="1" Spacing="5">
+                                                <Label Text="{Binding Title}"
+                                                       FontFamily="OpenSansSemibold"
+                                                       FontSize="16"
+                                                       TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}" />
+                                                <Label Text="{Binding Type, Converter={StaticResource SectionTypeDisplayConverter}}"
+                                                       FontFamily="OpenSansRegular"
+                                                       FontSize="12"
+                                                       TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}" />
+                                            </StackLayout>
+                                            
+                                            <Label Grid.Column="2"
+                                                   Text="{Binding Order, Converter={StaticResource AddOneConverter}}"
+                                                   FontFamily="OpenSansSemibold"
+                                                   FontSize="14"
+                                                   TextColor="{StaticResource Primary}"
+                                                   VerticalOptions="Center" />
+                                        </Grid>
+                                    </material:MaterialCard>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                </material:MaterialCard>
+                
+                <!-- Action Buttons -->
+                <StackLayout Spacing="15">
+                    <Button Text="{Binding StartButtonText}"
+                            Command="{Binding StartLessonCommand}"
+                            IsEnabled="{Binding CanStartLesson}"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="{StaticResource OnPrimary}"
+                            CornerRadius="25"
+                            HeightRequest="50"
+                            FontSize="16"
+                            FontAttributes="Bold" />
+                    
+                    <Button Text="Back to Lessons"
+                            Command="{Binding GoBackCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="{StaticResource Primary}"
+                            BorderColor="{StaticResource Primary}"
+                            BorderWidth="1"
+                            CornerRadius="25"
+                            HeightRequest="50"
+                            FontSize="16" />
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

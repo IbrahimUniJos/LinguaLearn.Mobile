@@ -26,6 +26,10 @@
                   ContentTemplate="{DataTemplate views:LessonPlayerPage}"
                   Route="lessonPlayer" />
     
+    <ShellContent Title="Lesson Details"
+                  ContentTemplate="{DataTemplate views:LessonDetailsPage}"
+                  Route="lessonDetails" />
+    
     <ShellContent Title="Lesson Complete"
                   ContentTemplate="{DataTemplate views:LessonCompletePage}"
                   Route="lessonComplete" />

@@ -8,7 +8,7 @@ using LinguaLearn.Mobile.Services.User;
 
 namespace LinguaLearn.Mobile.ViewModels;
 
-public partial class LessonsViewModel : ObservableObject
+public partial class LessonsViewModel : ObservableObject, IQueryAttributable
 {
     private readonly ILessonService _lessonService;
     private readonly IUserService _userService;
@@ -36,6 +36,15 @@ public partial class LessonsViewModel : ObservableObject
     {
         _lessonService = lessonService;
         _userService = userService;
+    }
+
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        // Handle any query parameters if needed
+        if (query.ContainsKey("refresh") && bool.TryParse(query["refresh"].ToString(), out var shouldRefresh) && shouldRefresh)
+        {
+            _ = Task.Run(async () => await RefreshAsync());
+        }
     }
 
     public async Task InitializeAsync()

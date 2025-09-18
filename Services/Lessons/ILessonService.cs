@@ -36,4 +36,11 @@ public interface ILessonService
     // Real-time listeners
     IAsyncEnumerable<Lesson> ListenToLessonsAsync(CancellationToken ct = default);
     Task<IDisposable> ListenToUserProgressAsync(string userId, string lessonId, Action<UserProgress?> onProgressUpdate, CancellationToken ct = default);
+    
+    // Additional lesson management
+    Task<ServiceResult<bool>> ResetLessonProgressAsync(string userId, string lessonId, CancellationToken ct = default);
+    Task<ServiceResult<List<Lesson>>> SearchLessonsAsync(string searchTerm, CancellationToken ct = default);
+    Task<ServiceResult<bool>> BookmarkLessonAsync(string userId, string lessonId, CancellationToken ct = default);
+    Task<ServiceResult<bool>> UnbookmarkLessonAsync(string userId, string lessonId, CancellationToken ct = default);
+    Task<ServiceResult<List<Lesson>>> GetBookmarkedLessonsAsync(string userId, CancellationToken ct = default);
 }

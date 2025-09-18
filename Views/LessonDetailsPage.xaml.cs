@@ -2,11 +2,11 @@ using LinguaLearn.Mobile.ViewModels;
 
 namespace LinguaLearn.Mobile.Views;
 
-public partial class LessonCompletePage : ContentPage
+public partial class LessonDetailsPage : ContentPage
 {
-    private readonly LessonCompleteViewModel _viewModel;
+    private readonly LessonDetailsViewModel _viewModel;
 
-    public LessonCompletePage(LessonCompleteViewModel viewModel)
+    public LessonDetailsPage(LessonDetailsViewModel viewModel)
     {
         InitializeComponent();
         _viewModel = viewModel;

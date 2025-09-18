@@ -1,146 +1,245 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage x:Class="LinguaLearn.Mobile.Views.LessonCompletePage"
-             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:material="clr-namespace:HorusStudio.Maui.MaterialDesignControls;assembly=HorusStudio.Maui.MaterialDesignControls"
-             Title="Lesson Complete"
-             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
+<ContentPage
+    x:Class="LinguaLearn.Mobile.Views.LessonCompletePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="clr-namespace:HorusStudio.Maui.MaterialDesignControls;assembly=HorusStudio.Maui.MaterialDesignControls"
+    xmlns:viewmodels="clr-namespace:LinguaLearn.Mobile.ViewModels"
+    Title="Lesson Complete"
+    x:DataType="viewmodels:LessonCompleteViewModel"
+    BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight},
+                                      Dark={StaticResource BackgroundDark}}"
+    NavigationPage.HasNavigationBar="False">
 
-    <ScrollView>
-        <StackLayout Spacing="30" Padding="40" VerticalOptions="CenterAndExpand">
-            
-            <!-- Success Animation Area -->
-            <StackLayout HorizontalOptions="Center" Spacing="20">
-                <Label Text="🎉"
-                       FontSize="80"
-                       HorizontalOptions="Center" />
-                
-                <Label Text="Lesson Complete!"
-                       FontFamily="OpenSansSemibold"
-                       FontSize="32"
-                       TextColor="{StaticResource Primary}"
-                       HorizontalOptions="Center" />
-            </StackLayout>
-            
-            <!-- Lesson Info -->
-            <material:MaterialCard CornerRadius="20"
-                                   Padding="25"
-                                   BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
-                <StackLayout Spacing="15">
-                    <Label x:Name="LessonTitleLabel"
-                           Text="Lesson Title"
-                           FontFamily="OpenSansSemibold"
-                           FontSize="20"
-                           TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}"
-                           HorizontalOptions="Center" />
-                    
-                    <!-- XP Earned -->
-                    <StackLayout Orientation="Horizontal"
-                               HorizontalOptions="Center"
-                               Spacing="10">
-                        <Label Text="⭐"
-                               FontSize="24" />
-                        <Label x:Name="XPEarnedLabel"
-                               Text="+0 XP Earned"
-                               FontFamily="OpenSansSemibold"
-                               FontSize="24"
-                               TextColor="{StaticResource Primary}" />
+    <Grid RowDefinitions="*,Auto">
+        <!--  Main Content  -->
+        <ScrollView Grid.Row="0">
+            <StackLayout
+                Padding="40"
+                Spacing="30"
+                VerticalOptions="Center">
+
+                <!--  Celebration Animation Area  -->
+                <StackLayout HorizontalOptions="Center" Spacing="20">
+                    <Label
+                        FontSize="80"
+                        HorizontalOptions="Center"
+                        Text="🎉" />
+
+                    <Label
+                        FontFamily="OpenSansSemibold"
+                        FontSize="28"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Text="{Binding CongratulationsMessage}"
+                        TextColor="{AppThemeBinding Light={StaticResource OnBackgroundLight},
+                                                    Dark={StaticResource OnBackgroundDark}}" />
+
+                    <Label
+                        FontFamily="OpenSansRegular"
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Text="{Binding GetCelebrationMessage}"
+                        TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight},
+                                                    Dark={StaticResource OnSurfaceVariantDark}}" />
+                </StackLayout>
+
+                <!--  XP Reward Card  -->
+                <material:MaterialCard
+                    Padding="30"
+                    BackgroundColor="{StaticResource Primary}"
+                    CornerRadius="20"
+                    HorizontalOptions="Center"
+                    WidthRequest="280">
+                    <StackLayout HorizontalOptions="Center" Spacing="15">
+                        <Label
+                            FontSize="60"
+                            HorizontalOptions="Center"
+                            Text="{Binding GetXpCelebrationIcon}" />
+
+                        <Label
+                            FontFamily="OpenSansSemibold"
+                            FontSize="24"
+                            HorizontalOptions="Center"
+                            HorizontalTextAlignment="Center"
+                            Text="{Binding XpMessage}"
+                            TextColor="{StaticResource OnPrimary}" />
+
+                        <Label
+                            FontFamily="OpenSansRegular"
+                            FontSize="14"
+                            HorizontalOptions="Center"
+                            HorizontalTextAlignment="Center"
+                            Text="Experience Points Earned"
+                            TextColor="{StaticResource OnPrimary}" />
                     </StackLayout>
-                    
-                    <!-- Stats -->
-                    <Grid ColumnDefinitions="*,*,*"
-                          RowDefinitions="Auto,Auto"
-                          ColumnSpacing="20"
-                          RowSpacing="10">
-                        
-                        <StackLayout Grid.Column="0" HorizontalOptions="Center">
-                            <Label Text="📚"
-                                   FontSize="24"
-                                   HorizontalOptions="Center" />
-                            <Label Text="Sections"
-                                   FontFamily="OpenSansRegular"
-                                   FontSize="12"
-                                   TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}"
-                                   HorizontalOptions="Center" />
-                            <Label x:Name="SectionsCompletedLabel"
-                                   Text="5"
-                                   FontFamily="OpenSansSemibold"
-                                   FontSize="18"
-                                   TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}"
-                                   HorizontalOptions="Center" />
-                        </StackLayout>
-                        
-                        <StackLayout Grid.Column="1" HorizontalOptions="Center">
-                            <Label Text="⏱️"
-                                   FontSize="24"
-                                   HorizontalOptions="Center" />
-                            <Label Text="Time"
-                                   FontFamily="OpenSansRegular"
-                                   FontSize="12"
-                                   TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}"
-                                   HorizontalOptions="Center" />
-                            <Label x:Name="TimeSpentLabel"
-                                   Text="5 min"
-                                   FontFamily="OpenSansSemibold"
-                                   FontSize="18"
-                                   TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}"
-                                   HorizontalOptions="Center" />
-                        </StackLayout>
-                        
-                        <StackLayout Grid.Column="2" HorizontalOptions="Center">
-                            <Label Text="🎯"
-                                   FontSize="24"
-                                   HorizontalOptions="Center" />
-                            <Label Text="Accuracy"
-                                   FontFamily="OpenSansRegular"
-                                   FontSize="12"
-                                   TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight}, Dark={StaticResource OnSurfaceVariantDark}}"
-                                   HorizontalOptions="Center" />
-                            <Label x:Name="AccuracyLabel"
-                                   Text="100%"
-                                   FontFamily="OpenSansSemibold"
-                                   FontSize="18"
-                                   TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}"
-                                   HorizontalOptions="Center" />
-                        </StackLayout>
-                    </Grid>
-                </StackLayout>
-            </material:MaterialCard>
-            
-            <!-- Achievements -->
-            <StackLayout x:Name="AchievementsSection"
-                       Spacing="15"
-                       IsVisible="False">
-                <Label Text="New Achievements!"
-                       FontFamily="OpenSansSemibold"
-                       FontSize="20"
-                       TextColor="{AppThemeBinding Light={StaticResource OnBackgroundLight}, Dark={StaticResource OnBackgroundDark}}"
-                       HorizontalOptions="Center" />
-                
-                <StackLayout x:Name="BadgesList" Spacing="10">
-                    <!-- Badges will be added dynamically -->
-                </StackLayout>
+                </material:MaterialCard>
+
+                <!--  Achievement Stats  -->
+                <material:MaterialCard
+                    Padding="20"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
+                                                      Dark={StaticResource SurfaceDark}}"
+                    CornerRadius="15">
+                    <StackLayout Spacing="15">
+                        <Label
+                            FontFamily="OpenSansSemibold"
+                            FontSize="18"
+                            HorizontalOptions="Center"
+                            Text="Lesson Summary"
+                            TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight},
+                                                        Dark={StaticResource OnSurfaceDark}}" />
+
+                        <Grid
+                            ColumnDefinitions="*,*"
+                            ColumnSpacing="20"
+                            RowDefinitions="Auto,Auto"
+                            RowSpacing="15">
+                            <StackLayout
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                HorizontalOptions="Center"
+                                Spacing="5">
+                                <Label
+                                    FontSize="24"
+                                    HorizontalOptions="Center"
+                                    Text="📚" />
+                                <Label
+                                    FontFamily="OpenSansRegular"
+                                    FontSize="12"
+                                    HorizontalOptions="Center"
+                                    Text="Lesson"
+                                    TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight},
+                                                                Dark={StaticResource OnSurfaceVariantDark}}" />
+                                <Label
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    Text="Completed"
+                                    TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight},
+                                                                Dark={StaticResource OnSurfaceDark}}" />
+                            </StackLayout>
+
+                            <StackLayout
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                HorizontalOptions="Center"
+                                Spacing="5">
+                                <Label
+                                    FontSize="24"
+                                    HorizontalOptions="Center"
+                                    Text="⭐" />
+                                <Label
+                                    FontFamily="OpenSansRegular"
+                                    FontSize="12"
+                                    HorizontalOptions="Center"
+                                    Text="XP Earned"
+                                    TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight},
+                                                                Dark={StaticResource OnSurfaceVariantDark}}" />
+                                <Label
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    Text="{Binding XpEarned}"
+                                    TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight},
+                                                                Dark={StaticResource OnSurfaceDark}}" />
+                            </StackLayout>
+
+                            <StackLayout
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                HorizontalOptions="Center"
+                                Spacing="5">
+                                <Label
+                                    FontSize="24"
+                                    HorizontalOptions="Center"
+                                    Text="🎯" />
+                                <Label
+                                    FontFamily="OpenSansRegular"
+                                    FontSize="12"
+                                    HorizontalOptions="Center"
+                                    Text="Progress"
+                                    TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight},
+                                                                Dark={StaticResource OnSurfaceVariantDark}}" />
+                                <Label
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    Text="100%"
+                                    TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight},
+                                                                Dark={StaticResource OnSurfaceDark}}" />
+                            </StackLayout>
+
+                            <StackLayout
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                HorizontalOptions="Center"
+                                Spacing="5">
+                                <Label
+                                    FontSize="24"
+                                    HorizontalOptions="Center"
+                                    Text="🏅" />
+                                <Label
+                                    FontFamily="OpenSansRegular"
+                                    FontSize="12"
+                                    HorizontalOptions="Center"
+                                    Text="Status"
+                                    TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight},
+                                                                Dark={StaticResource OnSurfaceVariantDark}}" />
+                                <Label
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    Text="Mastered"
+                                    TextColor="{StaticResource Primary}" />
+                            </StackLayout>
+                        </Grid>
+                    </StackLayout>
+                </material:MaterialCard>
             </StackLayout>
-            
-            <!-- Action Buttons -->
-            <StackLayout Spacing="15">
-                <material:MaterialButton Text="Continue Learning"
-                                       BackgroundColor="{StaticResource Primary}"
-                                       TextColor="{StaticResource OnPrimary}"
-                                       HeightRequest="56"
-                                       CornerRadius="28"
-                                       FontSize="16"
-                                       FontAttributes="Bold"
-                                       Clicked="OnContinueLearningClicked" />
-                
-                <Button Text="Back to Lessons"
-                        BackgroundColor="Transparent"
-                        TextColor="{StaticResource Primary}"
-                        HeightRequest="48"
-                        CornerRadius="24"
-                        FontSize="16"
-                        Clicked="OnBackToLessonsClicked" />
+        </ScrollView>
+
+        <!--  Action Buttons  -->
+        <StackLayout
+            Grid.Row="1"
+            Padding="20,10,20,30"
+            Spacing="15">
+
+            <Button
+                BackgroundColor="{StaticResource Primary}"
+                Command="{Binding ContinueLearningCommand}"
+                CornerRadius="25"
+                FontAttributes="Bold"
+                FontSize="16"
+                HeightRequest="56"
+                Text="Continue Learning"
+                TextColor="{StaticResource OnPrimary}" />
+
+            <StackLayout Orientation="Horizontal" Spacing="15">
+                <Button
+                    BackgroundColor="Transparent"
+                    BorderColor="{StaticResource Primary}"
+                    BorderWidth="1"
+                    Command="{Binding ShareAchievementCommand}"
+                    CornerRadius="25"
+                    FontSize="14"
+                    HeightRequest="48"
+                    HorizontalOptions="Fill"
+                    Text="Share Achievement"
+                    TextColor="{StaticResource Primary}" />
+
+                <Button
+                    BackgroundColor="Transparent"
+                    Command="{Binding GoToHomepageCommand}"
+                    CornerRadius="25"
+                    FontSize="14"
+                    HeightRequest="48"
+                    HorizontalOptions="Fill"
+                    Text="Go Home"
+                    TextColor="{AppThemeBinding Light={StaticResource OnSurfaceVariantLight},
+                                                Dark={StaticResource OnSurfaceVariantDark}}" />
             </StackLayout>
         </StackLayout>
-    </ScrollView>
+    </Grid>
 </ContentPage>

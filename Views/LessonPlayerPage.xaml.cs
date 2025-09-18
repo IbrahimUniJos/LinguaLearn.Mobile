@@ -2,12 +2,9 @@ using LinguaLearn.Mobile.ViewModels;
 
 namespace LinguaLearn.Mobile.Views;
 
-[QueryProperty(nameof(LessonId), "lessonId")]
 public partial class LessonPlayerPage : ContentPage
 {
     private readonly LessonPlayerViewModel _viewModel;
-
-    public string LessonId { get; set; } = string.Empty;
 
     public LessonPlayerPage(LessonPlayerViewModel viewModel)
     {
@@ -19,11 +16,7 @@ public partial class LessonPlayerPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        
-        if (!string.IsNullOrEmpty(LessonId))
-        {
-            await _viewModel.InitializeAsync(LessonId);
-        }
+        // ViewModel handles initialization through IQueryAttributable
     }
 
     protected override bool OnBackButtonPressed()
