@@ -52,6 +52,7 @@ namespace LinguaLearn.Mobile
             builder.Services.AddFirebaseServices(builder.Configuration);
             builder.Services.AddTransient<IActivityService, ActivityService>();
             builder.Services.AddTransient<TestDataSeeder>();
+            builder.Services.AddTransient<ContentSeeder>();
             
             // Add game logic services
             builder.Services.AddTransient<Services.Lessons.ILessonService, Services.Lessons.LessonService>();
@@ -67,6 +68,7 @@ namespace LinguaLearn.Mobile
             builder.Services.AddTransient<LessonDetailsViewModel>();
             builder.Services.AddTransient<LessonCompleteViewModel>();
             builder.Services.AddTransient<QuizViewModel>();
+            builder.Services.AddTransient<SeedViewModel>();
 
             // Add Views
             builder.Services.AddTransient<LoginPage>();
@@ -78,6 +80,7 @@ namespace LinguaLearn.Mobile
             builder.Services.AddTransient<Views.LessonDetailsPage>();
             builder.Services.AddTransient<Views.LessonCompletePage>();
             builder.Services.AddTransient<Views.QuizPage>();
+            builder.Services.AddTransient<SeedPage>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

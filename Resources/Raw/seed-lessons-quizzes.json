@@ -1,0 +1,726 @@
+{
+  "lessons": [
+    {
+      "id": "en-basics-1",
+      "title": "Basics 1",
+      "language": "en",
+      "description": "Greetings and introductions",
+      "difficulty": "beginner",
+      "tags": ["greetings", "intro"],
+      "sections": [
+        { "title": "Hello", "kind": "text", "body": "Say hello and greet people politely." },
+        { "title": "Goodbye", "kind": "text", "body": "Learn common farewells." },
+        { "kind": "image", "storageUri": "gs://lingualearn-content/lessons/en-basics-1/hello.png", "alt": "Greeting icons" }
+      ],
+      "prerequisites": [],
+      "durationMinutes": 10,
+      "isPublished": true,
+      "sortIndex": 1,
+      "version": 1,
+      "author": "content-team",
+      "createdAt": "SERVER_TIMESTAMP",
+      "updatedAt": "SERVER_TIMESTAMP",
+      "quizzes": [
+        {
+          "id": "main-quiz",
+          "title": "Basics 1 Quiz",
+          "lessonId": "en-basics-1",
+          "isPublished": true,
+          "timeLimitSec": 300,
+          "passScore": 70,
+          "adaptiveConfig": { "baseDifficulty": 1, "weightAccuracy": 0.7 },
+          "version": 1,
+          "createdAt": "SERVER_TIMESTAMP",
+          "updatedAt": "SERVER_TIMESTAMP",
+          "questions": [
+            {
+              "id": "question-001",
+              "type": "MultipleChoice",
+              "order": 1,
+              "prompt": "How do you say 'Hello'?",
+              "options": ["Hello", "Goodbye", "Please", "Thanks"],
+              "correctIndexes": [0],
+              "points": 10,
+              "hints": ["Common greeting"]
+            },
+            {
+              "id": "question-002",
+              "type": "FillBlank",
+              "order": 2,
+              "prompt": "Fill in the blank",
+              "textWithBlank": "___, my name is Anna.",
+              "acceptableAnswers": ["Hello", "Hi"],
+              "points": 10
+            },
+            {
+              "id": "question-003",
+              "type": "Matching",
+              "order": 3,
+              "prompt": "Match the greetings to times of day",
+              "left": ["Good morning", "Good afternoon", "Good evening"],
+              "right": ["After 12pm", "Late day", "Before 12pm"],
+              "pairs": [ {"l": 0, "r": 2}, {"l": 1, "r": 0}, {"l": 2, "r": 1} ],
+              "points": 15
+            },
+            {
+              "id": "question-004",
+              "type": "Translation",
+              "order": 4,
+              "prompt": "Translate to English",
+              "sourceText": "Adiós",
+              "targetAcceptable": ["Goodbye", "Bye"],
+              "points": 10,
+              "hints": ["Farewell"]
+            },
+            {
+              "id": "question-005",
+              "type": "Listening",
+              "order": 5,
+              "prompt": "Listen and type what you hear",
+              "media": { "audioStorageUri": "gs://lingualearn-content/lessons/en-basics-1/audio/hello.mp3" },
+              "transcript": "Hello",
+              "acceptableAnswers": ["Hello"],
+              "points": 15
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "en-basics-2",
+      "title": "Basics 2",
+      "language": "en",
+      "description": "Introducing yourself and simple pleasantries",
+      "difficulty": "beginner",
+      "tags": ["introductions", "polite"],
+      "sections": [
+        { "title": "Names", "kind": "text", "body": "Share and ask for names politely." },
+        { "title": "Please & Thanks", "kind": "text", "body": "Use polite expressions in common situations." }
+      ],
+      "prerequisites": ["en-basics-1"],
+      "durationMinutes": 12,
+      "isPublished": true,
+      "sortIndex": 2,
+      "version": 1,
+      "author": "content-team",
+      "createdAt": "SERVER_TIMESTAMP",
+      "updatedAt": "SERVER_TIMESTAMP",
+      "quizzes": [
+        {
+          "id": "main-quiz",
+          "title": "Basics 2 Quiz",
+          "lessonId": "en-basics-2",
+          "isPublished": true,
+          "timeLimitSec": 360,
+          "passScore": 70,
+          "version": 1,
+          "createdAt": "SERVER_TIMESTAMP",
+          "updatedAt": "SERVER_TIMESTAMP",
+          "questions": [
+            {
+              "id": "question-001",
+              "type": "MultipleChoice",
+              "order": 1,
+              "prompt": "Choose the polite phrase",
+              "options": ["Gimme that", "Please", "Now", "Move"],
+              "correctIndexes": [1],
+              "points": 10
+            },
+            {
+              "id": "question-002",
+              "type": "FillBlank",
+              "order": 2,
+              "prompt": "Fill in the blank",
+              "textWithBlank": "My name is ___",
+              "acceptableAnswers": ["John", "Anna", "<any name>"] ,
+              "points": 10
+            },
+            {
+              "id": "question-003",
+              "type": "Speaking",
+              "order": 3,
+              "prompt": "Say: 'Nice to meet you'",
+              "targetPhrase": "Nice to meet you",
+              "targetPhonemes": ["n", "a?", "s", "t", "u?", "mi?t", "ju?"],
+              "points": 20,
+              "hints": ["Speak clearly and at a natural pace"]
+            },
+            {
+              "id": "question-004",
+              "type": "Translation",
+              "order": 4,
+              "prompt": "Translate to English",
+              "sourceText": "Gracias",
+              "targetAcceptable": ["Thanks", "Thank you"],
+              "points": 10
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "es-basics-1",
+      "title": "Básicos 1",
+      "language": "es",
+      "description": "Saludos e introducciones en español",
+      "difficulty": "beginner",
+      "tags": ["saludos", "introducción"],
+      "sections": [
+        { "title": "Hola", "kind": "text", "body": "Aprende a saludar en español." },
+        { "title": "Adiós", "kind": "text", "body": "Formas comunes de despedirse." }
+      ],
+      "prerequisites": [],
+      "durationMinutes": 10,
+      "isPublished": true,
+      "sortIndex": 3,
+      "version": 1,
+      "author": "content-team",
+      "createdAt": "SERVER_TIMESTAMP",
+      "updatedAt": "SERVER_TIMESTAMP",
+      "quizzes": [
+        {
+          "id": "quiz-principal",
+          "title": "Quiz Básicos 1",
+          "lessonId": "es-basics-1",
+          "isPublished": true,
+          "timeLimitSec": 300,
+          "passScore": 70,
+          "version": 1,
+          "createdAt": "SERVER_TIMESTAMP",
+          "updatedAt": "SERVER_TIMESTAMP",
+          "questions": [
+            {
+              "id": "question-001",
+              "type": "MultipleChoice",
+              "order": 1,
+              "prompt": "¿Cómo se dice 'Hello' en español?",
+              "options": ["Adiós", "Hola", "Por favor", "Gracias"],
+              "correctIndexes": [1],
+              "points": 10
+            },
+            {
+              "id": "question-002",
+              "type": "Translation",
+              "order": 2,
+              "prompt": "Traduce al español",
+              "sourceText": "Goodbye",
+              "targetAcceptable": ["Adiós", "Chao"],
+              "points": 10
+            },
+            {
+              "id": "question-003",
+              "type": "FillBlank",
+              "order": 3,
+              "prompt": "Completa la frase",
+              "textWithBlank": "___, me llamo Ana.",
+              "acceptableAnswers": ["Hola"],
+              "points": 10
+            },
+            {
+              "id": "question-004",
+              "type": "Listening",
+              "order": 4,
+              "prompt": "Escucha y escribe lo que oyes",
+              "media": { "audioStorageUri": "gs://lingualearn-content/lessons/es-basics-1/audio/hola.mp3" },
+              "transcript": "Hola",
+              "acceptableAnswers": ["Hola"],
+              "points": 15
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "en-phrases-1",
+      "title": "Common Phrases 1",
+      "language": "en",
+      "description": "Everyday phrases for travelers",
+      "difficulty": "beginner",
+      "tags": ["travel", "everyday"],
+      "sections": [
+        { "title": "Asking for help", "kind": "text", "body": "Useful phrases when you need assistance." },
+        { "title": "Directions", "kind": "text", "body": "Finding your way politely." },
+        { "kind": "image", "storageUri": "gs://lingualearn-content/lessons/en-phrases-1/map.png", "alt": "Map and directions" }
+      ],
+      "prerequisites": ["en-basics-1"],
+      "durationMinutes": 15,
+      "isPublished": true,
+      "sortIndex": 4,
+      "version": 1,
+      "author": "content-team",
+      "createdAt": "SERVER_TIMESTAMP",
+      "updatedAt": "SERVER_TIMESTAMP",
+      "quizzes": [
+        {
+          "id": "main-quiz",
+          "title": "Common Phrases Quiz",
+          "lessonId": "en-phrases-1",
+          "isPublished": true,
+          "timeLimitSec": 420,
+          "passScore": 75,
+          "version": 1,
+          "createdAt": "SERVER_TIMESTAMP",
+          "updatedAt": "SERVER_TIMESTAMP",
+          "questions": [
+            {
+              "id": "question-001",
+              "type": "MultipleChoice",
+              "order": 1,
+              "prompt": "Choose the best phrase to ask for help",
+              "options": ["Where am I?", "Help, please", "Go away", "Stop"],
+              "correctIndexes": [1],
+              "points": 10
+            },
+            {
+              "id": "question-002",
+              "type": "Translation",
+              "order": 2,
+              "prompt": "Translate to English",
+              "sourceText": "¿Dónde está el baño?",
+              "targetAcceptable": ["Where is the bathroom?", "Where's the bathroom?"],
+              "points": 15
+            },
+            {
+              "id": "question-003",
+              "type": "Listening",
+              "order": 3,
+              "prompt": "Listen and select the meaning",
+              "media": { "audioStorageUri": "gs://lingualearn-content/lessons/en-phrases-1/audio/excuse-me.mp3" },
+              "transcript": "Excuse me",
+              "options": ["I'm sorry", "Excuse me", "Thank you", "Please"],
+              "correctIndexes": [1],
+              "points": 15
+            },
+            {
+              "id": "question-004",
+              "type": "Speaking",
+              "order": 4,
+              "prompt": "Say: 'Could you help me?'",
+              "targetPhrase": "Could you help me?",
+              "points": 20,
+              "hints": ["Speak clearly; keep a rising intonation at the end"]
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "en-numbers-1",
+      "title": "Numbers 0–20",
+      "language": "en",
+      "description": "Counting and understanding numbers from zero to twenty",
+      "difficulty": "beginner",
+      "tags": ["numbers", "counting"],
+      "sections": [
+        { "title": "Counting Up", "kind": "text", "body": "Learn number words from 0 to 20." },
+        { "title": "Using Numbers", "kind": "text", "body": "Use numbers in simple sentences." }
+      ],
+      "prerequisites": ["en-basics-1"],
+      "durationMinutes": 10,
+      "isPublished": true,
+      "sortIndex": 5,
+      "version": 1,
+      "author": "content-team",
+      "createdAt": "SERVER_TIMESTAMP",
+      "updatedAt": "SERVER_TIMESTAMP",
+      "quizzes": [
+        {
+          "id": "main-quiz",
+          "title": "Numbers Quiz",
+          "lessonId": "en-numbers-1",
+          "isPublished": true,
+          "timeLimitSec": 300,
+          "passScore": 70,
+          "version": 1,
+          "createdAt": "SERVER_TIMESTAMP",
+          "updatedAt": "SERVER_TIMESTAMP",
+          "questions": [
+            {
+              "id": "question-001",
+              "type": "MultipleChoice",
+              "order": 1,
+              "prompt": "Select the number word for 7",
+              "options": ["six", "seven", "eight", "nine"],
+              "correctIndexes": [1],
+              "points": 10
+            },
+            {
+              "id": "question-002",
+              "type": "FillBlank",
+              "order": 2,
+              "prompt": "Complete the sentence",
+              "textWithBlank": "I have ___ apples.",
+              "acceptableAnswers": ["two"],
+              "points": 10
+            },
+            {
+              "id": "question-003",
+              "type": "Matching",
+              "order": 3,
+              "prompt": "Match digits to words",
+              "left": ["1", "2", "3"],
+              "right": ["three", "one", "two"],
+              "pairs": [ {"l": 0, "r": 1}, {"l": 1, "r": 2}, {"l": 2, "r": 0} ],
+              "points": 15
+            },
+            {
+              "id": "question-004",
+              "type": "Listening",
+              "order": 4,
+              "prompt": "Listen and type the number word",
+              "media": { "audioStorageUri": "gs://lingualearn-content/lessons/en-numbers-1/audio/seven.mp3" },
+              "transcript": "seven",
+              "acceptableAnswers": ["seven"],
+              "points": 15
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "en-food-1",
+      "title": "Food & Drinks 1",
+      "language": "en",
+      "description": "Essential food vocabulary and polite ordering",
+      "difficulty": "beginner",
+      "tags": ["food", "restaurant"],
+      "sections": [
+        { "title": "Common Foods", "kind": "text", "body": "Learn words like bread, water, apple, tea." },
+        { "title": "Ordering", "kind": "text", "body": "Polite ways to order food and drinks." },
+        { "kind": "image", "storageUri": "gs://lingualearn-content/lessons/en-food-1/foods.png", "alt": "Common foods" }
+      ],
+      "prerequisites": ["en-basics-1"],
+      "durationMinutes": 12,
+      "isPublished": true,
+      "sortIndex": 6,
+      "version": 1,
+      "author": "content-team",
+      "createdAt": "SERVER_TIMESTAMP",
+      "updatedAt": "SERVER_TIMESTAMP",
+      "quizzes": [
+        {
+          "id": "main-quiz",
+          "title": "Food & Drinks Quiz",
+          "lessonId": "en-food-1",
+          "isPublished": true,
+          "timeLimitSec": 360,
+          "passScore": 70,
+          "version": 1,
+          "createdAt": "SERVER_TIMESTAMP",
+          "updatedAt": "SERVER_TIMESTAMP",
+          "questions": [
+            {
+              "id": "question-001",
+              "type": "MultipleChoice",
+              "order": 1,
+              "prompt": "Which one is a fruit?",
+              "options": ["bread", "apple", "water", "tea"],
+              "correctIndexes": [1],
+              "points": 10
+            },
+            {
+              "id": "question-002",
+              "type": "FillBlank",
+              "order": 2,
+              "prompt": "Fill in the blank",
+              "textWithBlank": "I would like ___ water.",
+              "acceptableAnswers": ["some"],
+              "points": 10
+            },
+            {
+              "id": "question-003",
+              "type": "Listening",
+              "order": 3,
+              "prompt": "Listen and type the word",
+              "media": { "audioStorageUri": "gs://lingualearn-content/lessons/en-food-1/audio/apple.mp3" },
+              "transcript": "apple",
+              "acceptableAnswers": ["apple"],
+              "points": 15
+            },
+            {
+              "id": "question-004",
+              "type": "Translation",
+              "order": 4,
+              "prompt": "Translate to English",
+              "sourceText": "pan",
+              "targetAcceptable": ["bread"],
+              "points": 10
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "en-grammar-1",
+      "title": "Present Simple 1",
+      "language": "en",
+      "description": "Present simple usage and -s/-es endings",
+      "difficulty": "intermediate",
+      "tags": ["grammar", "present-simple"],
+      "sections": [
+        { "title": "Forming Present Simple", "kind": "text", "body": "I/You/We/They + base verb; He/She/It + base+s/-es." },
+        { "title": "Usage", "kind": "text", "body": "Habits, routines, facts." }
+      ],
+      "prerequisites": ["en-basics-2"],
+      "durationMinutes": 14,
+      "isPublished": true,
+      "sortIndex": 7,
+      "version": 1,
+      "author": "content-team",
+      "createdAt": "SERVER_TIMESTAMP",
+      "updatedAt": "SERVER_TIMESTAMP",
+      "quizzes": [
+        {
+          "id": "main-quiz",
+          "title": "Present Simple Quiz",
+          "lessonId": "en-grammar-1",
+          "isPublished": true,
+          "timeLimitSec": 420,
+          "passScore": 75,
+          "version": 1,
+          "createdAt": "SERVER_TIMESTAMP",
+          "updatedAt": "SERVER_TIMESTAMP",
+          "questions": [
+            {
+              "id": "question-001",
+              "type": "FillBlank",
+              "order": 1,
+              "prompt": "Complete the sentence",
+              "textWithBlank": "He ___ to school every day.",
+              "acceptableAnswers": ["goes"],
+              "points": 15
+            },
+            {
+              "id": "question-002",
+              "type": "MultipleChoice",
+              "order": 2,
+              "prompt": "Choose the correct form",
+              "options": ["She go", "She goes", "She going", "She is go"],
+              "correctIndexes": [1],
+              "points": 10
+            },
+            {
+              "id": "question-003",
+              "type": "Matching",
+              "order": 3,
+              "prompt": "Match subject to verb form",
+              "left": ["I", "He", "They"],
+              "right": ["go", "goes", "go"],
+              "pairs": [ {"l": 0, "r": 0}, {"l": 1, "r": 1}, {"l": 2, "r": 2} ],
+              "points": 15
+            },
+            {
+              "id": "question-004",
+              "type": "Translation",
+              "order": 4,
+              "prompt": "Translate to English",
+              "sourceText": "Yo como temprano.",
+              "targetAcceptable": ["I eat early." , "I eat early"],
+              "points": 15
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "en-time-1",
+      "title": "Time & Clocks 1",
+      "language": "en",
+      "description": "Telling time: o'clock, half past, quarter to",
+      "difficulty": "beginner",
+      "tags": ["time", "clock"],
+      "sections": [
+        { "title": "Reading the Clock", "kind": "text", "body": "Learn o'clock, half past, quarter past/to." },
+        { "title": "Asking the Time", "kind": "text", "body": "Polite questions about time." }
+      ],
+      "prerequisites": ["en-basics-1"],
+      "durationMinutes": 10,
+      "isPublished": true,
+      "sortIndex": 8,
+      "version": 1,
+      "author": "content-team",
+      "createdAt": "SERVER_TIMESTAMP",
+      "updatedAt": "SERVER_TIMESTAMP",
+      "quizzes": [
+        {
+          "id": "main-quiz",
+          "title": "Time Quiz",
+          "lessonId": "en-time-1",
+          "isPublished": true,
+          "timeLimitSec": 300,
+          "passScore": 70,
+          "version": 1,
+          "createdAt": "SERVER_TIMESTAMP",
+          "updatedAt": "SERVER_TIMESTAMP",
+          "questions": [
+            {
+              "id": "question-001",
+              "type": "MultipleChoice",
+              "order": 1,
+              "prompt": "What is 3:30?",
+              "options": ["Three o'clock", "Half past three", "Quarter to three", "Quarter past three"],
+              "correctIndexes": [1],
+              "points": 10
+            },
+            {
+              "id": "question-002",
+              "type": "Listening",
+              "order": 2,
+              "prompt": "Listen and choose the time",
+              "media": { "audioStorageUri": "gs://lingualearn-content/lessons/en-time-1/audio/nine-oclock.mp3" },
+              "transcript": "It's nine o'clock",
+              "options": ["8:00", "9:00", "9:30", "10:00"],
+              "correctIndexes": [1],
+              "points": 15
+            },
+            {
+              "id": "question-003",
+              "type": "Translation",
+              "order": 3,
+              "prompt": "Translate to English",
+              "sourceText": "Son las cuatro y cuarto",
+              "targetAcceptable": ["It's quarter past four", "It is quarter past four"],
+              "points": 15
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "es-phrases-1",
+      "title": "Frases Comunes 1",
+      "language": "es",
+      "description": "Frases cotidianas para viajeros",
+      "difficulty": "beginner",
+      "tags": ["viajes", "cotidiano"],
+      "sections": [
+        { "title": "Pidiendo ayuda", "kind": "text", "body": "Frases útiles cuando necesitas ayuda." },
+        { "title": "Direcciones", "kind": "text", "body": "Cómo preguntar por direcciones." }
+      ],
+      "prerequisites": ["es-basics-1"],
+      "durationMinutes": 12,
+      "isPublished": true,
+      "sortIndex": 9,
+      "version": 1,
+      "author": "content-team",
+      "createdAt": "SERVER_TIMESTAMP",
+      "updatedAt": "SERVER_TIMESTAMP",
+      "quizzes": [
+        {
+          "id": "main-quiz",
+          "title": "Quiz Frases Comunes",
+          "lessonId": "es-phrases-1",
+          "isPublished": true,
+          "timeLimitSec": 360,
+          "passScore": 70,
+          "version": 1,
+          "createdAt": "SERVER_TIMESTAMP",
+          "updatedAt": "SERVER_TIMESTAMP",
+          "questions": [
+            {
+              "id": "question-001",
+              "type": "MultipleChoice",
+              "order": 1,
+              "prompt": "Elige la mejor frase para pedir ayuda",
+              "options": ["¿Dónde estoy?", "¿Puedes ayudarme, por favor?", "Vete", "Para"],
+              "correctIndexes": [1],
+              "points": 10
+            },
+            {
+              "id": "question-002",
+              "type": "Translation",
+              "order": 2,
+              "prompt": "Traduce al español",
+              "sourceText": "Excuse me",
+              "targetAcceptable": ["Disculpa", "Perdón"],
+              "points": 15
+            },
+            {
+              "id": "question-003",
+              "type": "Listening",
+              "order": 3,
+              "prompt": "Escucha y selecciona el significado",
+              "media": { "audioStorageUri": "gs://lingualearn-content/lessons/es-phrases-1/audio/gracias.mp3" },
+              "transcript": "Gracias",
+              "options": ["Gracias", "Hola", "Por favor", "Adiós"],
+              "correctIndexes": [0],
+              "points": 15
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "es-grammar-1",
+      "title": "Género y Número 1",
+      "language": "es",
+      "description": "Género (masculino/femenino) y número (singular/plural)",
+      "difficulty": "intermediate",
+      "tags": ["gramática", "género", "número"],
+      "sections": [
+        { "title": "Reglas básicas", "kind": "text", "body": "-o masculino, -a femenino; plural con -s/-es." },
+        { "title": "Ejemplos", "kind": "text", "body": "El libro, la casa; los libros, las casas." }
+      ],
+      "prerequisites": ["es-basics-1"],
+      "durationMinutes": 15,
+      "isPublished": true,
+      "sortIndex": 10,
+      "version": 1,
+      "author": "content-team",
+      "createdAt": "SERVER_TIMESTAMP",
+      "updatedAt": "SERVER_TIMESTAMP",
+      "quizzes": [
+        {
+          "id": "main-quiz",
+          "title": "Quiz Género y Número",
+          "lessonId": "es-grammar-1",
+          "isPublished": true,
+          "timeLimitSec": 420,
+          "passScore": 75,
+          "version": 1,
+          "createdAt": "SERVER_TIMESTAMP",
+          "updatedAt": "SERVER_TIMESTAMP",
+          "questions": [
+            {
+              "id": "question-001",
+              "type": "MultipleChoice",
+              "order": 1,
+              "prompt": "Selecciona el artículo correcto: ___ casa",
+              "options": ["El", "La", "Los", "Un"],
+              "correctIndexes": [1],
+              "points": 10
+            },
+            {
+              "id": "question-002",
+              "type": "FillBlank",
+              "order": 2,
+              "prompt": "Completa en plural",
+              "textWithBlank": "El libro ? los ___",
+              "acceptableAnswers": ["libros"],
+              "points": 15
+            },
+            {
+              "id": "question-003",
+              "type": "Matching",
+              "order": 3,
+              "prompt": "Relaciona singular ? plural",
+              "left": ["la casa", "el perro", "la flor"],
+              "right": ["las casas", "los perros", "las flores"],
+              "pairs": [ {"l": 0, "r": 0}, {"l": 1, "r": 1}, {"l": 2, "r": 2} ],
+              "points": 15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

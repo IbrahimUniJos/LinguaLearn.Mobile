@@ -1,59 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Shell x:Class="LinguaLearn.Mobile.AppShell"
-       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:local="clr-namespace:LinguaLearn.Mobile"
-       xmlns:auth="clr-namespace:LinguaLearn.Mobile.Views.Auth"
-       xmlns:onboarding="clr-namespace:LinguaLearn.Mobile.Views.Onboarding"
-       xmlns:views="clr-namespace:LinguaLearn.Mobile.Views"
-       Title="LinguaLearn"
-       FlyoutBehavior="Disabled">
+<Shell
+    x:Class="LinguaLearn.Mobile.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:auth="clr-namespace:LinguaLearn.Mobile.Views.Auth"
+    xmlns:local="clr-namespace:LinguaLearn.Mobile"
+    xmlns:onboarding="clr-namespace:LinguaLearn.Mobile.Views.Onboarding"
+    xmlns:views="clr-namespace:LinguaLearn.Mobile.Views"
+    Title="LinguaLearn"
+    FlyoutBehavior="Disabled">
 
     <!--  Authentication Flow (No Auth Required)  -->
-    <ShellContent Title="Login" 
-                  ContentTemplate="{DataTemplate auth:LoginPage}" 
-                  Route="login" />
 
-    <ShellContent Title="Register" 
-                  ContentTemplate="{DataTemplate auth:RegisterPage}" 
-                  Route="register" />
-    
-    <ShellContent Title="Onboarding"
-                  ContentTemplate="{DataTemplate onboarding:OnboardingPage}"
-                  Route="onboarding" />
-    
-    <ShellContent Title="Lesson Player"
-                  ContentTemplate="{DataTemplate views:LessonPlayerPage}"
-                  Route="lessonPlayer" />
-    
-    <ShellContent Title="Lesson Details"
-                  ContentTemplate="{DataTemplate views:LessonDetailsPage}"
-                  Route="lessonDetails" />
-    
-    <ShellContent Title="Lesson Complete"
-                  ContentTemplate="{DataTemplate views:LessonCompletePage}"
-                  Route="lessonComplete" />
-    
-    <ShellContent Title="Quiz"
-                  ContentTemplate="{DataTemplate views:QuizPage}"
-                  Route="quiz" />
+    <ShellContent
+        Title="Login"
+        ContentTemplate="{DataTemplate auth:LoginPage}"
+        Route="login" />
+
+    <ShellContent
+        Title="Register"
+        ContentTemplate="{DataTemplate auth:RegisterPage}"
+        Route="register" />
+
+    <ShellContent
+        Title="Onboarding"
+        ContentTemplate="{DataTemplate onboarding:OnboardingPage}"
+        Route="onboarding" />
+
+    <ShellContent
+        Title="Lesson Player"
+        ContentTemplate="{DataTemplate views:LessonPlayerPage}"
+        Route="lessonPlayer" />
+
+    <ShellContent
+        Title="Lesson Details"
+        ContentTemplate="{DataTemplate views:LessonDetailsPage}"
+        Route="lessonDetails" />
+
+    <ShellContent
+        Title="Lesson Complete"
+        ContentTemplate="{DataTemplate views:LessonCompletePage}"
+        Route="lessonComplete" />
+
+    <ShellContent
+        Title="Quiz"
+        ContentTemplate="{DataTemplate views:QuizPage}"
+        Route="quiz" />
 
     <!--  Main App Navigation (Auth Required)  -->
     <TabBar Route="main">
         <Tab Title="Home" Icon="home.png">
-            <ShellContent Title="Home" ContentTemplate="{DataTemplate views:UserHomepagePage}" Route="home" />
+            <ShellContent
+                Title="Home"
+                ContentTemplate="{DataTemplate views:UserHomepagePage}"
+                Route="home" />
         </Tab>
 
         <Tab Title="Lessons" Icon="lessons.png">
-            <ShellContent Title="Lessons" ContentTemplate="{DataTemplate views:LessonsPage}" Route="lessons" />
+            <ShellContent
+                Title="Lessons"
+                ContentTemplate="{DataTemplate views:LessonsPage}"
+                Route="lessons" />
         </Tab>
 
         <Tab Title="Leaderboard" Icon="leaderboard.png">
-            <ShellContent Title="Leaderboard" ContentTemplate="{DataTemplate local:MainPage}" Route="leaderboard" />
+            <ShellContent
+                Title="Leaderboard"
+                ContentTemplate="{DataTemplate local:MainPage}"
+                Route="leaderboard" />
         </Tab>
 
         <Tab Title="Profile" Icon="profile.png">
-            <ShellContent Title="Profile" ContentTemplate="{DataTemplate local:MainPage}" Route="profile" />
+            <ShellContent
+                Title="Profile"
+                ContentTemplate="{DataTemplate local:MainPage}"
+                Route="profile" />
         </Tab>
     </TabBar>
 

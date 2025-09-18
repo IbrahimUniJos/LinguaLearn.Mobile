@@ -14,6 +14,7 @@ namespace LinguaLearn.Mobile
             Routing.RegisterRoute("lessonDetails", typeof(LessonDetailsPage));
             Routing.RegisterRoute("lessonPlayer", typeof(LessonPlayerPage));
             Routing.RegisterRoute("lessonComplete", typeof(LessonCompletePage));
+            Routing.RegisterRoute("seed", typeof(SeedPage));
         }
     }
 }

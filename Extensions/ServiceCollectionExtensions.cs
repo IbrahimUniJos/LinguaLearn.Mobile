@@ -114,8 +114,9 @@ public static class ServiceCollectionExtensions
             }
         });
 
-        // Register Firestore Repository
+        // Register Firestore Repository & Content Seeder
         services.AddScoped<IFirestoreRepository, FirestoreRepository>();
+        services.AddScoped<ContentSeedService>();
 
         // Register Business Services
         services.AddScoped<IUserService, UserService>();

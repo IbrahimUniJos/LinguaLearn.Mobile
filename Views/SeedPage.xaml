@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="LinguaLearn.Mobile.Views.SeedPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:LinguaLearn.Mobile.ViewModels"
+    Title="Content Seeding"
+    x:DataType="vm:SeedViewModel">
+
+    <Grid
+        Padding="20"
+        RowDefinitions="Auto,Auto,Auto,Auto,*"
+        RowSpacing="16">
+        <Label
+            FontAttributes="Bold"
+            FontSize="20"
+            Text="Seed Lessons &amp; Quizzes to Firestore" />
+
+        <Button
+            Grid.Row="1"
+            Command="{Binding SeedCommand}"
+            Text="Seed Now" />
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ProgressBar
+                HeightRequest="8"
+                Progress="{Binding ProgressValue}"
+                VerticalOptions="Center" />
+            <Label
+                Grid.Column="1"
+                Margin="8,0,0,0"
+                Text="{Binding ProgressValue, StringFormat='{}{0:P0}'}"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <Label
+            Grid.Row="3"
+            LineBreakMode="WordWrap"
+            Text="{Binding Status}" />
+
+        <ScrollView Grid.Row="4">
+            <VerticalStackLayout />
+        </ScrollView>
+    </Grid>
+</ContentPage>
